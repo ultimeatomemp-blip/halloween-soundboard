@@ -3,353 +3,435 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <meta name="theme-color" content="#ff6600">
-  <meta name="description" content="Soundboard d'Halloween spatialisée multi-pièces avec mixeur d'ambiance et générateur aléatoire">
-  <title>🎃 Halloween Soundboard Spatialisée</title>
+  <meta name="theme-color" content="#0d0b14">
+  <meta name="description" content="Halloween FX - Soundboard Spatialisée & Mixeur d'Ambiance">
+  <title>🎃 Halloween FX — Soundboard Spatialisée</title>
   <link rel="manifest" href="manifest.json">
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎃</text></svg>">
+  <!-- Police gothique / horreur pour le titre "Halloween FX" et UI moderne -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Creepster&family=Griffy&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
-  <!-- Librairie Howler.js (inclut howler.core et howler.spatial pour stereo()) -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/howler/2.2.4/howler.min.js"></script>
-  <!-- Librairie SortableJS pour le Glisser-Déposer fluide sur PC et Smartphone -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/Sortable/1.15.2/Sortable.min.js"></script>
 </head>
 <body>
 
-  <!-- EN-TÊTE PERMANENT + MINI-LECTEUR D'AMBIANCE TOUJOURS VISIBLE -->
-  <header class="app-header">
-    <div class="header-top">
-      <div class="header-title">
-        <span class="pumpkin-icon">🎃</span>
-        <div>
-          <h1>Halloween FX</h1>
-          <span class="stereo-status-pill" id="stereo-engine-badge" title="État du moteur de spatialisation Gauche/Droite">
-            🎧 Stéréo Active
-          </span>
-        </div>
-      </div>
+  <div class="app-shell">
 
-      <!-- BARRE PERMANENTE DE L'AMBIANCE EN COURS (Visible sur tous les onglets) -->
-      <div class="mini-ambience-bar" id="mini-ambience-bar">
-        <span class="pulse-dot" id="ambience-dot"></span>
-        <div class="mini-ambience-info">
-          <span class="mini-label">Ambiance :</span>
-          <strong id="active-loop-name">Aucune (Silence)</strong>
-        </div>
-        <button id="btn-stop-loop" class="btn-mini-fade" disabled title="Couper l'ambiance en fondu">
-          🔉 Fade Stop
-        </button>
-      </div>
+    <!-- ====================================================================
+         1. BANNIÈRE ILLUSTRÉE HALLOWEEN FX (Style Maquette)
+         ==================================================================== -->
+    <header class="hero-banner">
+      <div class="hero-banner-bg"></div>
+      <div class="hero-cobweb-left"></div>
+      <div class="hero-cobweb-right"></div>
 
-      <!-- ACTIONS GLOBALES & PROFILS DE CONFIGURATION -->
-      <div class="header-actions">
-        <div class="master-vol-pill" title="Volume général">
-          <span>🔊</span>
+      <div class="hero-content">
+        <h1 class="hero-logo-title">Halloween FX</h1>
+        <span class="stereo-status-pill" id="stereo-engine-badge" title="État du moteur de spatialisation Gauche/Droite">
+          <span class="stereo-dot"></span> Stéréo Active
+        </span>
+      </div>
+    </header>
+
+    <!-- ====================================================================
+         2. BARRE DE CONTRÔLE SUPÉRIEURE (Fade Stop, Volume, Anti-Veille, Configs, Dossier, STOP)
+         ==================================================================== -->
+    <section class="top-control-strip">
+      <button id="btn-stop-loop" class="ctrl-box btn-fade-stop" disabled title="Couper l'ambiance en fondu">
+        <span class="fade-icon">🎚️</span>
+        <span>Fade Stop</span>
+      </button>
+
+      <div class="ctrl-box master-volume-box" title="Volume Général">
+        <span class="vol-icon">🔊</span>
+        <div class="vol-slider-stack">
+          <span class="vol-tiny-label">Volume Général</span>
           <input type="range" id="master-volume" min="0" max="1" step="0.02" value="1">
-          <span id="master-volume-val">100%</span>
         </div>
-
-        <!-- Bouton Anti-Veille (Wake Lock + Maintien Audio en écran verrouillé) -->
-        <button id="btn-keep-awake" class="btn-secondary" title="Empêcher la mise en veille et maintenir le son actif sur téléphone verrouillé">
-          🌙 Anti-Veille : OFF
-        </button>
-
-        <!-- Bouton de gestion des Configurations / Profils (Sauvegarder, Charger, Exporter) -->
-        <button id="btn-open-presets" class="btn-secondary" title="Enregistrer ou charger une configuration de Soundboard">
-          💾 Configs
-        </button>
-
-        <input type="file" id="folder-scanner-input" webkitdirectory directory multiple accept="audio/*" style="display: none;">
-        <button id="btn-scan-folder" class="btn-secondary" title="Scanner le dossier sounds/ (Active aussi le Panoramique Stéréo en mode fichier local)">
-          📂 Dossier
-        </button>
-        <button id="btn-export-json" class="btn-secondary" style="display: none;" title="Télécharger sounds.json">
-          📥 sounds.json
-        </button>
-        <button id="btn-stop-all" class="btn-danger" title="Couper tous les sons immédiatement">
-          ⏹️ STOP
-        </button>
+        <span id="master-volume-val" class="vol-pct">100%</span>
       </div>
-    </div>
 
-    <!-- Alerte uniquement si ouvert en file:// sans avoir sélectionné le dossier sounds -->
-    <div id="file-protocol-warning" class="file-warning-banner" style="display: none;">
-      <span>⚠️ <strong>Mode double-clic (<code>file://</code>) détecté :</strong> Le navigateur bloque le Panoramique Stéréo Gauche/Droite tant que vous n'avez pas autorisé le dossier <code>sounds</code> :</span>
-      <button id="btn-unlock-stereo" class="btn-unlock">🔓 Activer la Stéréo (Choisir le dossier "sounds")</button>
-    </div>
+      <div class="ctrl-box anti-sleep-box" id="btn-keep-awake" role="button" tabindex="0" title="Empêcher la mise en veille et maintenir le son sur téléphone verrouillé">
+        <span class="moon-icon">🌙</span>
+        <span>Anti-Veille</span>
+        <span class="mini-switch" id="keep-awake-switch"><span class="mini-knob"></span></span>
+      </div>
 
-    <!-- NAVIGATION PAR ONGLETS (PC, Tablette & Mobile) -->
-    <nav class="main-tabs-nav" aria-label="Sections principales">
-      <button class="tab-btn active" data-target="section-oneshots">
-        <span class="tab-icon">⚡</span>
-        <span class="tab-label">Pads Stéréo</span>
+      <button id="btn-open-presets" class="ctrl-box btn-top-tool" title="Enregistrer ou charger une configuration">
+        <span>⚙️</span>
+        <span>Configs</span>
       </button>
-      <button class="tab-btn" data-target="section-loops">
-        <span class="tab-icon">🌫️</span>
-        <span class="tab-label">Ambiances</span>
+
+      <input type="file" id="folder-scanner-input" webkitdirectory directory multiple accept="audio/*" style="display: none;">
+      <button id="btn-scan-folder" class="ctrl-box btn-top-tool" title="Scanner le dossier sounds/">
+        <span>📁</span>
+        <span>Dossier</span>
       </button>
-      <button class="tab-btn" data-target="section-randomizer">
-        <span class="tab-icon">🎲</span>
-        <span class="tab-label">Randomizer</span>
+
+      <button id="btn-export-json" class="ctrl-box btn-top-tool" title="Télécharger le fichier sounds.json">
+        <span>📄</span>
+        <span>sounds.json</span>
       </button>
-    </nav>
-  </header>
 
-  <!-- FENÊTRE MODALE : GESTION DES CONFIGURATIONS (PRESETS / PROFILS) -->
-  <div id="presets-modal" class="modal-backdrop" style="display: none;" role="dialog" aria-modal="true">
-    <div class="modal-card">
-      <div class="modal-header">
-        <h3>💾 Mes Configurations (Profils de Pièces)</h3>
-        <button id="btn-close-presets" class="btn-close-modal">✕</button>
-      </div>
-      <p class="panel-desc">
-        Sauvegardez l'organisation actuelle de votre Board (ordre des pads par glisser-déposer, favoris ⭐, sons masqués ✕, volumes et réglages du Randomizer).
-      </p>
-
-      <!-- Sauvegarder la config actuelle sous un nom -->
-      <div class="preset-save-row">
-        <input type="text" id="preset-name-input" placeholder="Nom du profil (ex: Salon, Entrée, Jardin)...">
-        <button id="btn-save-preset" class="btn-primary">➕ Enregistrer</button>
-      </div>
-
-      <!-- Liste des profils enregistrés dans l'appareil -->
-      <div id="presets-list" class="presets-list"></div>
-
-      <!-- Export / Import en fichier .json (pour transférer sa config du PC vers le Téléphone !) -->
-      <div class="preset-transfer-row">
-        <button id="btn-export-config-file" class="btn-secondary">📤 Exporter ma config (.json)</button>
-        <input type="file" id="import-config-input" accept=".json" style="display: none;">
-        <button id="btn-import-config-file" class="btn-secondary">📥 Importer une config (.json)</button>
-        <button id="btn-reset-default-config" class="btn-tiny-restore">♻️ Réinitialiser tout par défaut</button>
-      </div>
-    </div>
-  </div>
-
-  <!-- CONTENEUR PRINCIPAL -->
-  <main class="dashboard">
-
-    <!-- ======================================================================
-         ONGLET 1 : LES PADS SPATIALISÉS CUSTOMISABLES (ONESHOTS)
-         ====================================================================== -->
-    <section id="section-oneshots" class="panel active-panel">
-
-      <!-- Barre d'outils et de filtres des Pads -->
-      <div class="filters-toolbar">
-        <div class="toolbar-row">
-          <!-- Recherche texte -->
-          <div class="search-box">
-            <span>🔍</span>
-            <input type="search" id="oneshot-search" placeholder="Rechercher un son (ex: cri, loup, rire)...">
-          </div>
-
-          <!-- Tri / Organisation (Ordre perso glisser-déposer, Durée croissante/décroissante, A-Z) -->
-          <div class="sort-box">
-            <label for="oneshot-sort">📊 Classer :</label>
-            <select id="oneshot-sort" class="sort-select">
-              <option value="CUSTOM">🖐️ Mon ordre (Glisser-Déposer)</option>
-              <option value="DURATION_ASC">⏱️ Durée : Court ➔ Long</option>
-              <option value="DURATION_DESC">⏱️ Durée : Long ➔ Court</option>
-              <option value="NAME_ASC">🔤 Nom : A ➔ Z</option>
-              <option value="CATEGORY">🏷️ Par Catégorie</option>
-            </select>
-          </div>
-
-          <!-- Mode Réorganisation Tactile + Favoris & Masqués -->
-          <div class="filter-group">
-            <button id="btn-toggle-drag-mode" class="filter-chip drag-mode-chip" title="Verrouiller les sons pour déplacer librement les pads au doigt sans les déclencher">
-              🖐️ Mode Déplacement : OFF
-            </button>
-            <button id="btn-filter-favorites" class="filter-chip fav-chip" title="N'afficher que mes sons favoris">
-              ⭐ Favoris (<span id="fav-count">0</span>)
-            </button>
-            <button id="btn-show-hidden" class="filter-chip hidden-chip" title="Voir et restaurer les sons masqués">
-              👁️ Masqués (<span id="hidden-count">0</span>)
-            </button>
-            <button id="btn-restore-all-hidden" class="btn-tiny-restore" style="display: none;">
-              ♻️ Tout restaurer
-            </button>
-          </div>
-        </div>
-
-        <!-- Deuxième ligne : Filtre par Durée + Volume des Pads + Indicateur Pan Stéréo -->
-        <div class="toolbar-row secondary-bar">
-          <div class="filter-group" role="group" aria-label="Filtrer par durée">
-            <span class="filter-group-label">⏱️ Filtre durée :</span>
-            <button class="filter-chip dur-chip active" data-duration="ALL">Toutes</button>
-            <button class="filter-chip dur-chip" data-duration="SHORT">&lt; 3s (Flash)</button>
-            <button class="filter-chip dur-chip" data-duration="MEDIUM">3s – 8s</button>
-            <button class="filter-chip dur-chip" data-duration="LONG">&gt; 8s (Long)</button>
-          </div>
-
-          <div class="compact-slider">
-            <label for="oneshot-volume">💥 Volume Pads</label>
-            <input type="range" id="oneshot-volume" min="0.05" max="1" step="0.05" value="1">
-            <span id="oneshot-volume-val">100%</span>
-          </div>
-
-          <div class="stereo-helper-legend">
-            <span class="pan-live-badge" id="last-pan-value">Pan : Centre (0.00)</span>
-          </div>
-        </div>
-
-        <!-- Pastilles de catégories colorées -->
-        <div id="oneshots-category-pills" class="category-pills" role="tablist"></div>
-      </div>
-
-      <!-- Grille de Pads avec barre latérale gauche hors zone panoramique -->
-      <div id="oneshots-container" class="pads-grid">
-        <div class="loading-state">Chargement des pads...</div>
-      </div>
+      <button id="btn-stop-all" class="ctrl-box btn-stop-danger" title="Couper tous les sons immédiatement">
+        <span class="stop-square">■</span>
+        <span>STOP</span>
+      </button>
     </section>
 
-    <!-- ======================================================================
-         ONGLET 2 : ÉCRAN DÉDIÉ AUX AMBIANCES & MUSIQUES (LOOPS)
-         ====================================================================== -->
-    <section id="section-loops" class="panel">
-      <div class="loops-top-bar">
-        <div class="loops-header-info">
-          <h2>🌫️ Ambiances & Musiques de Fond</h2>
-          <p class="panel-desc">Une seule ambiance joue à la fois : lancer une nouvelle piste remplace automatiquement la précédente en fondu enchaîné (Crossfade).</p>
+    <!-- Bandeau d'avertissement si ouvert en file:// sans avoir sélectionné le dossier -->
+    <div id="file-protocol-warning" class="file-warning-banner" style="display: none;">
+      <span>⚠️ <strong>Mode fichier local (<code>file://</code>) :</strong> Pour activer le Panoramique Stéréo Gauche/Droite sans serveur, sélectionnez une fois votre dossier <code>sounds</code> :</span>
+      <button id="btn-unlock-stereo" class="btn-unlock">🔓 Activer la Stéréo (Dossier "sounds")</button>
+    </div>
+
+    <!-- ====================================================================
+         3. BARRE D'ONGLETS (Pads Stéréo | Ambiances | Randomizer)
+         ==================================================================== -->
+    <nav class="main-tabs-bar" aria-label="Sections principales">
+      <button class="main-tab active" data-target="view-pads">
+        <span class="tab-ico">⊞</span>
+        <span>Pads Stéréo</span>
+      </button>
+      <button class="main-tab" data-target="view-ambience">
+        <span class="tab-ico">🎵</span>
+        <span>Ambiances</span>
+      </button>
+      <button class="main-tab" data-target="view-randomizer">
+        <span class="tab-ico">🔀</span>
+        <span>Randomizer</span>
+      </button>
+    </nav>
+
+    <!-- ====================================================================
+         4. WORKSPACE PRINCIPAL :
+         - Sur PC : Colonne Gauche (Grille de Cartes Illustrées) + Colonne Droite (Ambiance + Randomizer)
+         - Sur Tablette : Grille 3 colonnes + tiroirs en bas
+         - Sur Smartphone : Liste compacte illustrée + accordéons repliables en bas
+         ==================================================================== -->
+    <main class="workspace-grid" id="workspace-grid">
+
+      <!-- COLONNE GAUCHE : PADS STÉRÉO OU CATALOGUE D'AMBIANCES -->
+      <section class="left-stage" id="left-stage">
+
+        <!-- VUE 1 : RECHERCHER & JOUER UN SON (PADS STÉRÉO ILLUSTRÉS) -->
+        <div id="stage-pads-content" class="stage-card">
+          <div class="stage-header-row">
+            <div class="stage-title">
+              <span>🗁</span>
+              <h2>Rechercher un son</h2>
+            </div>
+            <div class="stage-status-right">
+              <span class="pan-live-badge" id="last-pan-value">Pan : Centre (0.00)</span>
+            </div>
+          </div>
+
+          <!-- Barre de recherche + Bouton Filtres avancés (Tri durée, Mode déplacement, Masqués) -->
+          <div class="search-and-filter-row">
+            <div class="search-input-wrap">
+              <span class="search-magnifier">🔍</span>
+              <input type="search" id="oneshot-search" placeholder="Rechercher un son...">
+            </div>
+            <button type="button" id="btn-toggle-advanced-filters" class="btn-filter-funnel" title="Afficher les options de tri par durée, déplacement et sons masqués">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"></polygon></svg>
+            </button>
+          </div>
+
+          <!-- Tiroir d'options avancées (Tri par durée, Filtre durée, Mode Glisser-Déposer, Favoris, Masqués) -->
+          <div id="advanced-filters-drawer" class="advanced-filters-drawer" style="display: none;">
+            <div class="drawer-row">
+              <div class="sort-box">
+                <label for="oneshot-sort">📊 Classer :</label>
+                <select id="oneshot-sort" class="sort-select">
+                  <option value="CUSTOM">🖐️ Mon ordre (Glisser-Déposer)</option>
+                  <option value="DURATION_ASC">⏱️ Durée : Court ➔ Long</option>
+                  <option value="DURATION_DESC">⏱️ Durée : Long ➔ Court</option>
+                  <option value="NAME_ASC">🔤 Nom : A ➔ Z</option>
+                  <option value="CATEGORY">🏷️ Par Catégorie</option>
+                </select>
+              </div>
+
+              <div class="filter-group" role="group" aria-label="Filtrer par durée">
+                <span class="filter-group-label">⏱️ Durée :</span>
+                <button class="filter-chip dur-chip active" data-duration="ALL">Toutes</button>
+                <button class="filter-chip dur-chip" data-duration="SHORT">&lt; 3s</button>
+                <button class="filter-chip dur-chip" data-duration="MEDIUM">3s–8s</button>
+                <button class="filter-chip dur-chip" data-duration="LONG">&gt; 8s</button>
+              </div>
+            </div>
+
+            <div class="drawer-row">
+              <div class="filter-group">
+                <button id="btn-toggle-drag-mode" class="filter-chip drag-mode-chip" title="Verrouiller les sons pour déplacer librement les pads sans les déclencher">
+                  🖐️ Déplacer les Pads : OFF
+                </button>
+                <button id="btn-filter-favorites" class="filter-chip fav-chip">
+                  ⭐ Favoris (<span id="fav-count">0</span>)
+                </button>
+                <button id="btn-show-hidden" class="filter-chip hidden-chip">
+                  👁️ Masqués (<span id="hidden-count">0</span>)
+                </button>
+                <button id="btn-restore-all-hidden" class="btn-tiny-restore" style="display: none;">
+                  ♻️ Tout restaurer
+                </button>
+              </div>
+
+              <div class="pad-vol-inline">
+                <label for="oneshot-volume">💥 Volume Pads :</label>
+                <input type="range" id="oneshot-volume" min="0.05" max="1" step="0.05" value="1">
+                <span id="oneshot-volume-val">100%</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Pastilles de catégories (Style Maquette : Tous violet lumineux, puis catégories) -->
+          <div id="oneshots-category-pills" class="category-pills" role="tablist"></div>
+
+          <!-- Légende discrète du déclenchement stéréo -->
+          <div class="stereo-click-hint">
+            <span>◀ Clic à Gauche du Pad = Enceinte Gauche (-1.0)</span>
+            <span>● Centre (0.0)</span>
+            <span>Clic à Droite du Pad = Enceinte Droite (+1.0) ▶</span>
+          </div>
+
+          <!-- Grille des Pads Illustrés (5 colonnes sur PC, 3 sur Tablette, Liste illustrée sur Mobile) -->
+          <div id="oneshots-container" class="illustrated-pads-grid">
+            <div class="loading-state">Chargement des sons...</div>
+          </div>
         </div>
 
-        <div class="loops-controls-box">
-          <div class="compact-slider">
-            <label for="loop-master-volume">🔉 Volume Ambiance</label>
-            <input type="range" id="loop-master-volume" min="0.05" max="1" step="0.05" value="0.7">
-            <span id="loop-master-volume-val">70%</span>
-          </div>
-          <div class="compact-slider">
-            <label for="crossfade-duration">⏳ Fondu (Fade)</label>
-            <input type="range" id="crossfade-duration" min="0.5" max="6" step="0.5" value="2.0">
-            <span id="crossfade-duration-val">2.0s</span>
-          </div>
-        </div>
-      </div>
-
-      <!-- Barre de filtres et de tri pour les Ambiances (Favoris, Masqués, Tri par durée, Recherche) -->
-      <div class="filters-toolbar">
-        <div class="toolbar-row">
-          <div class="search-box">
-            <span>🔍</span>
-            <input type="search" id="loop-search" placeholder="Rechercher une ambiance ou musique...">
+        <!-- VUE 2 (Quand on clique sur l'onglet "🎵 Ambiances") : CATALOGUE COMPLET DES AMBIANCES -->
+        <div id="stage-loops-catalog" class="stage-card" style="display: none;">
+          <div class="stage-header-row">
+            <div class="stage-title">
+              <span>🎵</span>
+              <h2>Catalogue des Ambiances & Musiques (Boucles)</h2>
+            </div>
           </div>
 
-          <div class="sort-box">
-            <label for="loop-sort">📊 Classer :</label>
+          <div class="search-and-filter-row">
+            <div class="search-input-wrap">
+              <span class="search-magnifier">🔍</span>
+              <input type="search" id="loop-search" placeholder="Rechercher une ambiance ou musique...">
+            </div>
+
             <select id="loop-sort" class="sort-select">
               <option value="CUSTOM">🖐️ Mon ordre (Glisser-Déposer)</option>
               <option value="DURATION_ASC">⏱️ Durée : Court ➔ Long</option>
               <option value="DURATION_DESC">⏱️ Durée : Long ➔ Court</option>
               <option value="NAME_ASC">🔤 Nom : A ➔ Z</option>
             </select>
-          </div>
 
-          <div class="filter-group">
-            <button id="btn-loop-favorites" class="filter-chip fav-chip" title="N'afficher que mes ambiances favorites">
+            <button id="btn-loop-favorites" class="filter-chip fav-chip">
               ⭐ Favoris (<span id="loop-fav-count">0</span>)
             </button>
-            <button id="btn-loop-hidden" class="filter-chip hidden-chip" title="Voir et restaurer les ambiances masquées">
+            <button id="btn-loop-hidden" class="filter-chip hidden-chip">
               👁️ Masquées (<span id="loop-hidden-count">0</span>)
             </button>
             <button id="btn-restore-all-loops" class="btn-tiny-restore" style="display: none;">
               ♻️ Tout restaurer
             </button>
           </div>
+
+          <div id="loops-category-pills" class="category-pills" role="tablist"></div>
+
+          <div id="loops-container" class="illustrated-pads-grid">
+            <div class="loading-state">Chargement des ambiances...</div>
+          </div>
         </div>
 
-        <div id="loops-category-pills" class="category-pills" role="tablist"></div>
-      </div>
+      </section>
 
-      <!-- Grille des pistes d'ambiance -->
-      <div id="loops-container" class="loops-grid">
-        <div class="loading-state">Chargement des ambiances...</div>
-      </div>
-    </section>
+      <!-- COLONNE DROITE (SIDEBAR SUR PC / TIROIRS SUR MOBILE & TABLETTE) -->
+      <aside class="right-sidebar" id="right-sidebar">
 
-    <!-- ======================================================================
-         ONGLET 3 : ÉCRAN DÉDIÉ AU RANDOMIZER AUTONOME
-         ====================================================================== -->
-    <section id="section-randomizer" class="panel">
-      <div class="randomizer-layout">
-        <div class="randomizer-main-card">
-          <div class="panel-title-row">
-            <div>
-              <h2>🎲 Générateur Automatique ("Randomizer")</h2>
-              <p class="panel-desc">Laissez l'application jouer toute seule des sons courts au hasard dans la pièce.</p>
+        <!-- CARTE 1 : AMBIANCE EN ARRIÈRE-PLAN (Style Maquette) -->
+        <section class="sidebar-widget" id="widget-ambience">
+          <div class="widget-header" id="accordion-ambience-toggle">
+            <div class="widget-title">
+              <span class="widget-ico green-ico">🎵</span>
+              <h3>Ambiance en arrière-plan</h3>
             </div>
-            <label class="switch" title="Activer / Désactiver le générateur aléatoire">
-              <input type="checkbox" id="randomizer-toggle">
-              <span class="slider-toggle"></span>
-            </label>
+            <button type="button" class="widget-collapse-btn" aria-label="Plier/Déplier">⌄</button>
           </div>
 
-          <!-- État en direct du Randomizer -->
-          <div id="randomizer-status-box" class="randomizer-status inactive">
-            <div class="status-indicator">
-              <span class="status-dot"></span>
-              <span id="randomizer-state-text">Randomizer Désactivé</span>
+          <div class="widget-body" id="widget-ambience-body">
+            <!-- Carte du lecteur d'ambiance avec miniature illustrée, menu déroulant, bouton play et barre de progression -->
+            <div class="ambience-player-box">
+              <div class="ambience-thumb" id="active-loop-thumb"></div>
+              <div class="ambience-player-main">
+                <div class="ambience-select-row">
+                  <select id="ambience-quick-select" class="ambience-dropdown" title="Choisir l'ambiance active">
+                    <option value="">-- Choisir une ambiance --</option>
+                  </select>
+                </div>
+                <div class="ambience-transport-row">
+                  <button type="button" id="btn-ambience-play-pause" class="btn-circle-play" title="Lecture / Pause en fondu">
+                    ▶
+                  </button>
+                  <div class="ambience-progress-wrap">
+                    <div class="ambience-progress-bar">
+                      <div class="ambience-progress-fill" id="ambience-progress-fill"></div>
+                      <div class="ambience-progress-thumb" id="ambience-progress-thumb"></div>
+                    </div>
+                    <div class="ambience-time-label" id="ambience-time-label">00:00 / 00:00</div>
+                  </div>
+                </div>
+              </div>
             </div>
-            <div id="randomizer-countdown" class="countdown-text">--</div>
-            <div id="randomizer-last-played" class="last-played-text">Dernier son : Aucun</div>
+
+            <!-- Sliders Volume Ambiance & Fade In / Fade Out -->
+            <div class="widget-slider-block">
+              <div class="widget-slider-header">
+                <span>Volume Ambiance</span>
+                <strong id="loop-master-volume-val">70%</strong>
+              </div>
+              <div class="widget-slider-line">
+                <span class="slider-ico">🔉</span>
+                <input type="range" id="loop-master-volume" min="0.02" max="1" step="0.02" value="0.70">
+              </div>
+            </div>
+
+            <div class="widget-slider-block">
+              <div class="widget-slider-header">
+                <span>Fade In / Fade Out</span>
+                <strong id="crossfade-duration-val">2.0 s</strong>
+              </div>
+              <div class="widget-slider-line">
+                <span class="slider-ico">🎚️</span>
+                <input type="range" id="crossfade-duration" min="0.5" max="6" step="0.5" value="2.0">
+              </div>
+            </div>
+
+            <button type="button" id="btn-open-loops-catalog" class="btn-link-catalog">
+              🎶 Voir les 37 ambiances & gérer mes favoris ➔
+            </button>
           </div>
+        </section>
 
-          <div class="randomizer-sliders-grid">
-            <div class="setting-group">
-              <h3>⏳ Délai entre deux sons</h3>
-              <div class="dual-slider-row">
-                <label for="rand-delay-min">Minimum : <strong id="rand-delay-min-val">5s</strong></label>
-                <input type="range" id="rand-delay-min" min="1" max="120" step="1" value="5">
-              </div>
-              <div class="dual-slider-row">
-                <label for="rand-delay-max">Maximum : <strong id="rand-delay-max-val">20s</strong></label>
-                <input type="range" id="rand-delay-max" min="2" max="180" step="1" value="20">
-              </div>
+        <!-- CARTE 2 : GÉNÉRATEUR AUTOMATIQUE / RANDOMIZER (Style Maquette) -->
+        <section class="sidebar-widget" id="widget-randomizer">
+          <div class="widget-header" id="accordion-randomizer-toggle">
+            <div class="widget-title">
+              <span class="widget-ico orange-ico">🔀</span>
+              <h3>Générateur Automatique</h3>
             </div>
-
-            <div class="setting-group">
-              <h3>🔊 Volume aléatoire</h3>
-              <div class="dual-slider-row">
-                <label for="rand-vol-min">Volume Min : <strong id="rand-vol-min-val">30%</strong></label>
-                <input type="range" id="rand-vol-min" min="0.05" max="1" step="0.05" value="0.3">
-              </div>
-              <div class="dual-slider-row">
-                <label for="rand-vol-max">Volume Max : <strong id="rand-vol-max-val">100%</strong></label>
-                <input type="range" id="rand-vol-max" min="0.05" max="1" step="0.05" value="1.0">
-              </div>
-            </div>
-          </div>
-
-          <div class="setting-group">
-            <h3>🎧 Spatialisation & Filtres</h3>
-            <div class="rand-options-row">
-              <label class="checkbox-card">
-                <input type="checkbox" id="rand-stereo-random" checked>
-                <span>🔀 <strong>Stéréo aléatoire</strong> (Pan entre -1.0 Gauche et +1.0 Droite)</span>
+            <div class="widget-header-right">
+              <label class="switch" title="Activer / Désactiver le Générateur Automatique" onclick="event.stopPropagation()">
+                <input type="checkbox" id="randomizer-toggle">
+                <span class="slider-toggle"></span>
               </label>
-              <label class="checkbox-card">
+              <button type="button" class="widget-collapse-btn" aria-label="Plier/Déplier">⌄</button>
+            </div>
+          </div>
+
+          <div class="widget-body" id="widget-randomizer-body">
+            <!-- Petit bandeau d'état si actif -->
+            <div id="randomizer-status-box" class="randomizer-mini-status inactive">
+              <span id="randomizer-state-text">Inactif</span>
+              <span id="randomizer-countdown" class="countdown-text">--</span>
+              <div id="randomizer-last-played" class="last-played-text">Dernier son : Aucun</div>
+            </div>
+
+            <!-- Délai entre sons -->
+            <div class="widget-slider-block">
+              <div class="widget-slider-header">
+                <span>Délai entre sons (Min – Max)</span>
+                <strong><span id="rand-delay-min-val">5</span>s – <span id="rand-delay-max-val">20</span>s</strong>
+              </div>
+              <div class="dual-range-stack">
+                <input type="range" id="rand-delay-min" min="1" max="120" step="1" value="5" title="Délai minimum">
+                <input type="range" id="rand-delay-max" min="2" max="180" step="1" value="20" title="Délai maximum">
+              </div>
+            </div>
+
+            <!-- Plage de volume -->
+            <div class="widget-slider-block">
+              <div class="widget-slider-header">
+                <span>Plage de volume</span>
+                <strong><span id="rand-vol-min-val">30%</span> – <span id="rand-vol-max-val">100%</span></strong>
+              </div>
+              <div class="dual-range-stack">
+                <input type="range" id="rand-vol-min" min="0.05" max="1" step="0.05" value="0.3" title="Volume minimum">
+                <input type="range" id="rand-vol-max" min="0.05" max="1" step="0.05" value="1.0" title="Volume maximum">
+              </div>
+            </div>
+
+            <!-- Panoramique stéréo -->
+            <div class="widget-slider-block">
+              <div class="widget-slider-header">
+                <span>Panoramique stéréo</span>
+                <label class="inline-random-pan">
+                  <input type="checkbox" id="rand-stereo-random" checked>
+                  <span>Aléatoire G/D</span>
+                </label>
+              </div>
+              <input type="range" id="rand-fixed-pan" min="-1" max="1" step="0.05" value="0">
+              <div class="pan-sub-labels">
+                <span>Gauche</span>
+                <span>Droite</span>
+              </div>
+            </div>
+
+            <!-- Uniquement mes favoris -->
+            <div class="fav-only-row">
+              <span class="fav-star-label"><span class="gold-star">★</span> Uniquement mes favoris</span>
+              <label class="switch">
                 <input type="checkbox" id="rand-only-favorites">
-                <span>⭐ <strong>Piocher uniquement dans mes Favoris</strong></span>
+                <span class="slider-toggle"></span>
               </label>
             </div>
-          </div>
 
-          <div class="setting-group">
-            <div class="setting-header-inline">
-              <h3>🏷️ Catégories autorisées</h3>
-              <div class="mini-btns">
-                <button type="button" id="rand-select-all" class="btn-tiny">Tout cocher</button>
-                <button type="button" id="rand-select-none" class="btn-tiny">Tout décocher</button>
+            <!-- Catégories actives (Grille de badges à coche verte comme sur la maquette) -->
+            <div class="rand-cats-section">
+              <div class="setting-header-inline">
+                <span class="rand-cats-title">Catégories actives</span>
+                <div class="mini-btns">
+                  <button type="button" id="rand-select-all" class="btn-tiny">Tout</button>
+                  <button type="button" id="rand-select-none" class="btn-tiny">Aucun</button>
+                </div>
               </div>
+              <div id="randomizer-categories" class="rand-cats-pills"></div>
             </div>
-            <div id="randomizer-categories" class="checkbox-grid"></div>
           </div>
-        </div>
+        </section>
+
+      </aside>
+
+    </main>
+
+  </div>
+
+  <!-- FENÊTRE MODALE : GESTION DES CONFIGURATIONS (PRESETS / PROFILS) -->
+  <div id="presets-modal" class="modal-backdrop" style="display: none;" role="dialog" aria-modal="true">
+    <div class="modal-card">
+      <div class="modal-header">
+        <h3>⚙️ Mes Configurations (Profils de Pièces)</h3>
+        <button id="btn-close-presets" class="btn-close-modal">✕</button>
       </div>
-    </section>
+      <p class="panel-desc">
+        Sauvegardez l'organisation actuelle de votre Soundboard (ordre des pads par glisser-déposer, favoris ★, sons masqués, volumes et réglages du Randomizer).
+      </p>
 
-  </main>
+      <div class="preset-save-row">
+        <input type="text" id="preset-name-input" placeholder="Nom du profil (ex: Salon, Entrée, Jardin)...">
+        <button id="btn-save-preset" class="btn-primary">➕ Enregistrer</button>
+      </div>
 
-  <!-- Données pré-générées -->
+      <div id="presets-list" class="presets-list"></div>
+
+      <div class="preset-transfer-row">
+        <button id="btn-export-config-file" class="btn-secondary">📤 Exporter ma config (.json)</button>
+        <input type="file" id="import-config-input" accept=".json" style="display: none;">
+        <button id="btn-import-config-file" class="btn-secondary">📥 Importer une config (.json)</button>
+        <button id="btn-reset-default-config" class="btn-tiny-restore">♻️ Réinitialiser par défaut</button>
+      </div>
+    </div>
+  </div>
+
   <script src="sounds-data.js"></script>
   <script src="app.js"></script>
 </body>
