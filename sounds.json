@@ -1,0 +1,1142 @@
+[
+  {
+    "id": "amb_ambiance_de_cimetiere_mortelle",
+    "name": "Ambiance de cimetière mortelle",
+    "code": "AMB",
+    "file": "sounds/[AMB] Ambiance de cimetière mortelle.mp3",
+    "category": "Ambiances",
+    "type": "loop",
+    "duration": 9.7,
+    "durationFormatted": "9.7s"
+  },
+  {
+    "id": "amb_ambiance_fantastique",
+    "name": "Ambiance fantastique",
+    "code": "AMB",
+    "file": "sounds/[AMB] Ambiance fantastique.mp3",
+    "category": "Ambiances",
+    "type": "loop",
+    "duration": 85.4,
+    "durationFormatted": "1:25"
+  },
+  {
+    "id": "amb_ambiance_inquietante",
+    "name": "Ambiance inquiétante",
+    "code": "AMB",
+    "file": "sounds/[AMB] Ambiance inquiétante.mp3",
+    "category": "Ambiances",
+    "type": "loop",
+    "duration": 69.1,
+    "durationFormatted": "1:09"
+  },
+  {
+    "id": "amb_ambiance_sinistre_02",
+    "name": "Ambiance sinistre 02",
+    "code": "AMB",
+    "file": "sounds/[AMB] Ambiance sinistre 02.mp3",
+    "category": "Ambiances",
+    "type": "loop",
+    "duration": 19.5,
+    "durationFormatted": "20s"
+  },
+  {
+    "id": "amb_ambiance",
+    "name": "Ambiance",
+    "code": "AMB",
+    "file": "sounds/[AMB] Ambiance.mp3",
+    "category": "Ambiances",
+    "type": "loop",
+    "duration": 10,
+    "durationFormatted": "10s"
+  },
+  {
+    "id": "amb_cimetiere_hante_en_boucle_2",
+    "name": "Cimetière hanté en boucle 2",
+    "code": "AMB",
+    "file": "sounds/[AMB] Cimetière hanté en boucle 2.mp3",
+    "category": "Ambiances",
+    "type": "loop",
+    "duration": 188.6,
+    "durationFormatted": "3:09"
+  },
+  {
+    "id": "amb_cimetiere_hante_en_boucle",
+    "name": "Cimetière hanté en boucle",
+    "code": "AMB",
+    "file": "sounds/[AMB] Cimetière hanté en boucle.mp3",
+    "category": "Ambiances",
+    "type": "loop",
+    "duration": 188.6,
+    "durationFormatted": "3:09"
+  },
+  {
+    "id": "amb_echo_inquietant",
+    "name": "Écho inquiétant",
+    "code": "AMB",
+    "file": "sounds/[AMB] Écho inquiétant.mp3",
+    "category": "Ambiances",
+    "type": "loop",
+    "duration": 38,
+    "durationFormatted": "38s"
+  },
+  {
+    "id": "amb_maison_hantee",
+    "name": "Maison hantée",
+    "code": "AMB",
+    "file": "sounds/[AMB] Maison hantée.mp3",
+    "category": "Ambiances",
+    "type": "loop",
+    "duration": 468.6,
+    "durationFormatted": "7:49"
+  },
+  {
+    "id": "amb_montee_de_tension_01",
+    "name": "Montée de tension 01",
+    "code": "AMB",
+    "file": "sounds/[AMB] Montée de tension 01.mp3",
+    "category": "Ambiances",
+    "type": "loop",
+    "duration": 15.3,
+    "durationFormatted": "15s"
+  },
+  {
+    "id": "amb_nuit_effrayante_complete",
+    "name": "Nuit effrayante complète",
+    "code": "AMB",
+    "file": "sounds/[AMB] Nuit effrayante complète.mp3",
+    "category": "Ambiances",
+    "type": "loop",
+    "duration": 553.8,
+    "durationFormatted": "9:14"
+  },
+  {
+    "id": "amb_nuit_effrayante",
+    "name": "Nuit effrayante",
+    "code": "AMB",
+    "file": "sounds/[AMB] Nuit effrayante.mp3",
+    "category": "Ambiances",
+    "type": "loop",
+    "duration": 60,
+    "durationFormatted": "1:00"
+  },
+  {
+    "id": "amb_tension_terrifiante_2",
+    "name": "Tension terrifiante 2",
+    "code": "AMB",
+    "file": "sounds/[AMB] Tension terrifiante 2.mp3",
+    "category": "Ambiances",
+    "type": "loop",
+    "duration": 38,
+    "durationFormatted": "38s"
+  },
+  {
+    "id": "amb_tension_terrifiante_3",
+    "name": "Tension terrifiante 3",
+    "code": "AMB",
+    "file": "sounds/[AMB] Tension terrifiante 3.mp3",
+    "category": "Ambiances",
+    "type": "loop",
+    "duration": 41.5,
+    "durationFormatted": "42s"
+  },
+  {
+    "id": "amb_vent_d_halloween",
+    "name": "Vent d'Halloween",
+    "code": "AMB",
+    "file": "sounds/[AMB] Vent d'Halloween.mp3",
+    "category": "Ambiances",
+    "type": "loop",
+    "duration": 4.1,
+    "durationFormatted": "4.1s"
+  },
+  {
+    "id": "amb_vent_sinistre",
+    "name": "Vent sinistre",
+    "code": "AMB",
+    "file": "sounds/[AMB] Vent sinistre.mp3",
+    "category": "Ambiances",
+    "type": "loop",
+    "duration": 22,
+    "durationFormatted": "22s"
+  },
+  {
+    "id": "ani_corbeaux_et_chouette",
+    "name": "Corbeaux et chouette",
+    "code": "ANI",
+    "file": "sounds/[ANI] Corbeaux et chouette.mp3",
+    "category": "Animaux",
+    "type": "oneshot",
+    "duration": 49.7,
+    "durationFormatted": "50s"
+  },
+  {
+    "id": "ani_corbeaux",
+    "name": "Corbeaux",
+    "code": "ANI",
+    "file": "sounds/[ANI] Corbeaux.mp3",
+    "category": "Animaux",
+    "type": "oneshot",
+    "duration": 58.4,
+    "durationFormatted": "58s"
+  },
+  {
+    "id": "ani_hululement_de_chouette_02",
+    "name": "Hululement de chouette 02",
+    "code": "ANI",
+    "file": "sounds/[ANI] Hululement de chouette 02.mp3",
+    "category": "Animaux",
+    "type": "oneshot",
+    "duration": 1.6,
+    "durationFormatted": "1.6s"
+  },
+  {
+    "id": "ani_hurlement_de_loup",
+    "name": "Hurlement de loup",
+    "code": "ANI",
+    "file": "sounds/[ANI] Hurlement de loup.mp3",
+    "category": "Animaux",
+    "type": "oneshot",
+    "duration": 7.2,
+    "durationFormatted": "7.2s"
+  },
+  {
+    "id": "ani_loup_hurlant_d_halloween",
+    "name": "Loup hurlant d'Halloween",
+    "code": "ANI",
+    "file": "sounds/[ANI] Loup hurlant d'Halloween.mp3",
+    "category": "Animaux",
+    "type": "oneshot",
+    "duration": 4.1,
+    "durationFormatted": "4.1s"
+  },
+  {
+    "id": "fan_apparition_fantomatique",
+    "name": "Apparition fantomatique",
+    "code": "FAN",
+    "file": "sounds/[FAN] Apparition fantomatique.mp3",
+    "category": "Fantômes",
+    "type": "oneshot",
+    "duration": 14.1,
+    "durationFormatted": "14s"
+  },
+  {
+    "id": "fan_chant_fantomatique",
+    "name": "Chant fantomatique",
+    "code": "FAN",
+    "file": "sounds/[FAN] Chant fantomatique.mp3",
+    "category": "Fantômes",
+    "type": "loop",
+    "duration": 155.2,
+    "durationFormatted": "2:35"
+  },
+  {
+    "id": "fan_chuchotement_de_fantome_d_halloween",
+    "name": "Chuchotement de fantôme d'Halloween",
+    "code": "FAN",
+    "file": "sounds/[FAN] Chuchotement de fantôme d'Halloween.mp3",
+    "category": "Fantômes",
+    "type": "oneshot",
+    "duration": 2.4,
+    "durationFormatted": "2.4s"
+  },
+  {
+    "id": "fan_chuchotement_fantomatique",
+    "name": "Chuchotement fantomatique",
+    "code": "FAN",
+    "file": "sounds/[FAN] Chuchotement fantomatique.mp3",
+    "category": "Fantômes",
+    "type": "oneshot",
+    "duration": 2.4,
+    "durationFormatted": "2.4s"
+  },
+  {
+    "id": "fan_chuchotement_humain_fantomatique_05",
+    "name": "Chuchotement humain fantomatique 05",
+    "code": "FAN",
+    "file": "sounds/[FAN] Chuchotement humain fantomatique 05.mp3",
+    "category": "Fantômes",
+    "type": "oneshot",
+    "duration": 2.8,
+    "durationFormatted": "2.8s"
+  },
+  {
+    "id": "fan_chuchotements_de_fantome",
+    "name": "Chuchotements de fantôme",
+    "code": "FAN",
+    "file": "sounds/[FAN] Chuchotements de fantôme.mp3",
+    "category": "Fantômes",
+    "type": "oneshot",
+    "duration": 16.2,
+    "durationFormatted": "16s"
+  },
+  {
+    "id": "fan_fantome_paranormal_effrayant",
+    "name": "Fantôme paranormal effrayant",
+    "code": "FAN",
+    "file": "sounds/[FAN] Fantôme paranormal effrayant.mp3",
+    "category": "Fantômes",
+    "type": "oneshot",
+    "duration": 15.1,
+    "durationFormatted": "15s"
+  },
+  {
+    "id": "fan_frayeurs_de_goule_et_fantome",
+    "name": "Frayeurs de goule et fantôme",
+    "code": "FAN",
+    "file": "sounds/[FAN] Frayeurs de goule et fantôme.mp3",
+    "category": "Fantômes",
+    "type": "oneshot",
+    "duration": 29.1,
+    "durationFormatted": "29s"
+  },
+  {
+    "id": "fan_gemissement_de_fantome",
+    "name": "Gémissement de fantôme",
+    "code": "FAN",
+    "file": "sounds/[FAN] Gémissement de fantôme.mp3",
+    "category": "Fantômes",
+    "type": "oneshot",
+    "duration": 14.3,
+    "durationFormatted": "14s"
+  },
+  {
+    "id": "fan_hou_de_fantome",
+    "name": "Hou de fantôme",
+    "code": "FAN",
+    "file": "sounds/[FAN] Hou de fantôme.mp3",
+    "category": "Fantômes",
+    "type": "oneshot",
+    "duration": 3.2,
+    "durationFormatted": "3.2s"
+  },
+  {
+    "id": "fan_hurlement_de_fantome",
+    "name": "Hurlement de fantôme",
+    "code": "FAN",
+    "file": "sounds/[FAN] Hurlement de fantôme.mp3",
+    "category": "Fantômes",
+    "type": "oneshot",
+    "duration": 7.9,
+    "durationFormatted": "7.9s"
+  },
+  {
+    "id": "fan_hurlement_de_maison_hantee",
+    "name": "Hurlement de maison hantée",
+    "code": "FAN",
+    "file": "sounds/[FAN] Hurlement de maison hantée.mp3",
+    "category": "Fantômes",
+    "type": "oneshot",
+    "duration": 4.7,
+    "durationFormatted": "4.7s"
+  },
+  {
+    "id": "fan_rire_de_fantome",
+    "name": "Rire de fantôme",
+    "code": "FAN",
+    "file": "sounds/[FAN] Rire de fantôme.mp3",
+    "category": "Fantômes",
+    "type": "oneshot",
+    "duration": 14.7,
+    "durationFormatted": "15s"
+  },
+  {
+    "id": "fan_son_de_fantome_classique",
+    "name": "Son de fantôme classique",
+    "code": "FAN",
+    "file": "sounds/[FAN] Son de fantôme classique.mp3",
+    "category": "Fantômes",
+    "type": "oneshot",
+    "duration": 3.8,
+    "durationFormatted": "3.8s"
+  },
+  {
+    "id": "fx_bruit_inquietant",
+    "name": "Bruit inquiétant",
+    "code": "FX",
+    "file": "sounds/[FX] Bruit inquiétant.mp3",
+    "category": "Effets sonores",
+    "type": "oneshot",
+    "duration": 30,
+    "durationFormatted": "30s"
+  },
+  {
+    "id": "fx_coups_inquietants_sur_metal",
+    "name": "Coups inquiétants sur métal",
+    "code": "FX",
+    "file": "sounds/[FX] Coups inquiétants sur métal.mp3",
+    "category": "Effets sonores",
+    "type": "oneshot",
+    "duration": 13.8,
+    "durationFormatted": "14s"
+  },
+  {
+    "id": "fx_etincelles",
+    "name": "Étincelles",
+    "code": "FX",
+    "file": "sounds/[FX] Étincelles.mp3",
+    "category": "Effets sonores",
+    "type": "oneshot",
+    "duration": 2.7,
+    "durationFormatted": "2.7s"
+  },
+  {
+    "id": "fx_grincement_horrifique",
+    "name": "Grincement horrifique",
+    "code": "FX",
+    "file": "sounds/[FX] Grincement horrifique.mp3",
+    "category": "Effets sonores",
+    "type": "oneshot",
+    "duration": 6.8,
+    "durationFormatted": "6.8s"
+  },
+  {
+    "id": "fx_impact_cinematographique_3",
+    "name": "Impact cinématographique 3",
+    "code": "FX",
+    "file": "sounds/[FX] Impact cinématographique 3.mp3",
+    "category": "Effets sonores",
+    "type": "oneshot",
+    "duration": 5.5,
+    "durationFormatted": "5.5s"
+  },
+  {
+    "id": "fx_pas",
+    "name": "Pas",
+    "code": "FX",
+    "file": "sounds/[FX] Pas.mp3",
+    "category": "Effets sonores",
+    "type": "oneshot",
+    "duration": 0.5,
+    "durationFormatted": "0.5s"
+  },
+  {
+    "id": "fx_slime_gluant",
+    "name": "Slime gluant",
+    "code": "FX",
+    "file": "sounds/[FX] Slime gluant.mp3",
+    "category": "Effets sonores",
+    "type": "oneshot",
+    "duration": 41.5,
+    "durationFormatted": "42s"
+  },
+  {
+    "id": "fx_son_effrayant",
+    "name": "Son effrayant",
+    "code": "FX",
+    "file": "sounds/[FX] Son effrayant.mp3",
+    "category": "Effets sonores",
+    "type": "oneshot",
+    "duration": 2.4,
+    "durationFormatted": "2.4s"
+  },
+  {
+    "id": "fx_sons_les_plus_terrifiants",
+    "name": "Sons les plus terrifiants",
+    "code": "FX",
+    "file": "sounds/[FX] Sons les plus terrifiants.mp3",
+    "category": "Effets sonores",
+    "type": "oneshot",
+    "duration": 20.5,
+    "durationFormatted": "21s"
+  },
+  {
+    "id": "fx_sursaut_3",
+    "name": "Sursaut 3",
+    "code": "FX",
+    "file": "sounds/[FX] Sursaut 3.mp3",
+    "category": "Effets sonores",
+    "type": "oneshot",
+    "duration": 8.1,
+    "durationFormatted": "8.1s"
+  },
+  {
+    "id": "fx_sursaut",
+    "name": "Sursaut",
+    "code": "FX",
+    "file": "sounds/[FX] Sursaut.mp3",
+    "category": "Effets sonores",
+    "type": "oneshot",
+    "duration": 8.1,
+    "durationFormatted": "8.1s"
+  },
+  {
+    "id": "jeu_batterie",
+    "name": "Batterie",
+    "code": "JEU",
+    "file": "sounds/[JEU] Batterie.mp3",
+    "category": "Interface et jeu",
+    "type": "oneshot",
+    "duration": 1.7,
+    "durationFormatted": "1.7s"
+  },
+  {
+    "id": "jeu_chute_dans_le_trou",
+    "name": "Chute dans le trou",
+    "code": "JEU",
+    "file": "sounds/[JEU] Chute dans le trou.mp3",
+    "category": "Interface et jeu",
+    "type": "oneshot",
+    "duration": 1.9,
+    "durationFormatted": "1.9s"
+  },
+  {
+    "id": "jeu_chute",
+    "name": "Chute",
+    "code": "JEU",
+    "file": "sounds/[JEU] Chute.mp3",
+    "category": "Interface et jeu",
+    "type": "oneshot",
+    "duration": 7.9,
+    "durationFormatted": "7.9s"
+  },
+  {
+    "id": "jeu_clic_de_bouton",
+    "name": "Clic de bouton",
+    "code": "JEU",
+    "file": "sounds/[JEU] Clic de bouton.mp3",
+    "category": "Interface et jeu",
+    "type": "oneshot",
+    "duration": 0.6,
+    "durationFormatted": "0.6s"
+  },
+  {
+    "id": "jeu_refuse",
+    "name": "Refusé",
+    "code": "JEU",
+    "file": "sounds/[JEU] Refusé.mp3",
+    "category": "Interface et jeu",
+    "type": "oneshot",
+    "duration": 0.6,
+    "durationFormatted": "0.6s"
+  },
+  {
+    "id": "jeu_victoire",
+    "name": "Victoire",
+    "code": "JEU",
+    "file": "sounds/[JEU] Victoire.mp3",
+    "category": "Interface et jeu",
+    "type": "oneshot",
+    "duration": 12,
+    "durationFormatted": "12s"
+  },
+  {
+    "id": "mon_cri_de_creature_inquietante",
+    "name": "Cri de créature inquiétante",
+    "code": "MON",
+    "file": "sounds/[MON] Cri de créature inquiétante.mp3",
+    "category": "Monstres",
+    "type": "oneshot",
+    "duration": 10,
+    "durationFormatted": "10s"
+  },
+  {
+    "id": "mon_fete_des_zombies",
+    "name": "Fête des zombies",
+    "code": "MON",
+    "file": "sounds/[MON] Fête des zombies.mp3",
+    "category": "Monstres",
+    "type": "loop",
+    "duration": 276.7,
+    "durationFormatted": "4:37"
+  },
+  {
+    "id": "mon_grognement_de_monstre_2",
+    "name": "Grognement de monstre 2",
+    "code": "MON",
+    "file": "sounds/[MON] Grognement de monstre 2.mp3",
+    "category": "Monstres",
+    "type": "oneshot",
+    "duration": 77.1,
+    "durationFormatted": "1:17"
+  },
+  {
+    "id": "mon_grognement_de_monstre_allemand_2",
+    "name": "Grognement de monstre allemand 2",
+    "code": "MON",
+    "file": "sounds/[MON] Grognement de monstre allemand 2.mp3",
+    "category": "Monstres",
+    "type": "oneshot",
+    "duration": 6.7,
+    "durationFormatted": "6.7s"
+  },
+  {
+    "id": "mon_grognement_de_monstre",
+    "name": "Grognement de monstre",
+    "code": "MON",
+    "file": "sounds/[MON] Grognement de monstre.mp3",
+    "category": "Monstres",
+    "type": "oneshot",
+    "duration": 4.1,
+    "durationFormatted": "4.1s"
+  },
+  {
+    "id": "mon_grognement",
+    "name": "Grognement",
+    "code": "MON",
+    "file": "sounds/[MON] Grognement.mp3",
+    "category": "Monstres",
+    "type": "oneshot",
+    "duration": 5,
+    "durationFormatted": "5.0s"
+  },
+  {
+    "id": "mon_hurlement_de_loup_garou",
+    "name": "Hurlement de loup-garou",
+    "code": "MON",
+    "file": "sounds/[MON] Hurlement de loup-garou.mp3",
+    "category": "Monstres",
+    "type": "oneshot",
+    "duration": 8.3,
+    "durationFormatted": "8.3s"
+  },
+  {
+    "id": "mon_momie_sortant_du_sarcophage_2",
+    "name": "Momie sortant du sarcophage 2",
+    "code": "MON",
+    "file": "sounds/[MON] Momie sortant du sarcophage 2.mp3",
+    "category": "Monstres",
+    "type": "oneshot",
+    "duration": 17.2,
+    "durationFormatted": "17s"
+  },
+  {
+    "id": "mon_momie_sortant_du_sarcophage",
+    "name": "Momie sortant du sarcophage",
+    "code": "MON",
+    "file": "sounds/[MON] Momie sortant du sarcophage.mp3",
+    "category": "Monstres",
+    "type": "oneshot",
+    "duration": 17.2,
+    "durationFormatted": "17s"
+  },
+  {
+    "id": "mon_monstre_rodeur",
+    "name": "Monstre rôdeur",
+    "code": "MON",
+    "file": "sounds/[MON] Monstre rôdeur.mp3",
+    "category": "Monstres",
+    "type": "oneshot",
+    "duration": 20.2,
+    "durationFormatted": "20s"
+  },
+  {
+    "id": "mon_monstre",
+    "name": "Monstre",
+    "code": "MON",
+    "file": "sounds/[MON] Monstre.mp3",
+    "category": "Monstres",
+    "type": "oneshot",
+    "duration": 11.4,
+    "durationFormatted": "11s"
+  },
+  {
+    "id": "mon_rugissement_de_monstre_2",
+    "name": "Rugissement de monstre 2",
+    "code": "MON",
+    "file": "sounds/[MON] Rugissement de monstre 2.mp3",
+    "category": "Monstres",
+    "type": "oneshot",
+    "duration": 13.3,
+    "durationFormatted": "13s"
+  },
+  {
+    "id": "mon_rugissement",
+    "name": "Rugissement",
+    "code": "MON",
+    "file": "sounds/[MON] Rugissement.mp3",
+    "category": "Monstres",
+    "type": "oneshot",
+    "duration": 8.1,
+    "durationFormatted": "8.1s"
+  },
+  {
+    "id": "mon_zombie_2",
+    "name": "Zombie 2",
+    "code": "MON",
+    "file": "sounds/[MON] Zombie 2.mp3",
+    "category": "Monstres",
+    "type": "oneshot",
+    "duration": 12.8,
+    "durationFormatted": "13s"
+  },
+  {
+    "id": "mus_accord_d_orgue_horrifique_4",
+    "name": "Accord d'orgue horrifique 4",
+    "code": "MUS",
+    "file": "sounds/[MUS] Accord d'orgue horrifique 4.mp3",
+    "category": "Musiques",
+    "type": "oneshot",
+    "duration": 8.6,
+    "durationFormatted": "8.6s"
+  },
+  {
+    "id": "mus_boite_a_musique_matin_a_ceylan",
+    "name": "Boîte à musique - matin à Ceylan",
+    "code": "MUS",
+    "file": "sounds/[MUS] Boîte à musique - matin à Ceylan.mp3",
+    "category": "Musiques",
+    "type": "loop",
+    "duration": 185.7,
+    "durationFormatted": "3:06"
+  },
+  {
+    "id": "mus_boite_a_musique_desaccordee",
+    "name": "Boîte à musique désaccordée",
+    "code": "MUS",
+    "file": "sounds/[MUS] Boîte à musique désaccordée.mp3",
+    "category": "Musiques",
+    "type": "loop",
+    "duration": 30,
+    "durationFormatted": "30s"
+  },
+  {
+    "id": "mus_boite_a_musique_du_the_au_sommet",
+    "name": "Boîte à musique du thé au sommet",
+    "code": "MUS",
+    "file": "sounds/[MUS] Boîte à musique du thé au sommet.mp3",
+    "category": "Musiques",
+    "type": "loop",
+    "duration": 32.2,
+    "durationFormatted": "32s"
+  },
+  {
+    "id": "mus_boite_a_musique_effrayante",
+    "name": "Boîte à musique effrayante",
+    "code": "MUS",
+    "file": "sounds/[MUS] Boîte à musique effrayante.mp3",
+    "category": "Musiques",
+    "type": "loop",
+    "duration": 36.7,
+    "durationFormatted": "37s"
+  },
+  {
+    "id": "mus_boite_a_musique_fredonnee",
+    "name": "Boîte à musique fredonnée",
+    "code": "MUS",
+    "file": "sounds/[MUS] Boîte à musique fredonnée.mp3",
+    "category": "Musiques",
+    "type": "loop",
+    "duration": 28.9,
+    "durationFormatted": "29s"
+  },
+  {
+    "id": "mus_boite_a_musique",
+    "name": "Boîte à musique",
+    "code": "MUS",
+    "file": "sounds/[MUS] Boîte à musique.mp3",
+    "category": "Musiques",
+    "type": "loop",
+    "duration": 17.1,
+    "durationFormatted": "17s"
+  },
+  {
+    "id": "mus_brouillard_sombre",
+    "name": "Brouillard sombre",
+    "code": "MUS",
+    "file": "sounds/[MUS] Brouillard sombre.mp3",
+    "category": "Musiques",
+    "type": "loop",
+    "duration": 148.1,
+    "durationFormatted": "2:28"
+  },
+  {
+    "id": "mus_cloches_d_halloween_en_boucle",
+    "name": "Cloches d'Halloween en boucle",
+    "code": "MUS",
+    "file": "sounds/[MUS] Cloches d'Halloween en boucle.mp3",
+    "category": "Musiques",
+    "type": "loop",
+    "duration": 20.7,
+    "durationFormatted": "21s"
+  },
+  {
+    "id": "mus_fantome_a_l_orgue",
+    "name": "Fantôme à l'orgue",
+    "code": "MUS",
+    "file": "sounds/[MUS] Fantôme à l'orgue.mp3",
+    "category": "Musiques",
+    "type": "loop",
+    "duration": 138,
+    "durationFormatted": "2:18"
+  },
+  {
+    "id": "mus_la_chute_shindo_1_min",
+    "name": "La chute - Shindo - 1 min",
+    "code": "MUS",
+    "file": "sounds/[MUS] La chute - Shindo - 1 min.mp3",
+    "category": "Musiques",
+    "type": "loop",
+    "duration": 60.2,
+    "durationFormatted": "1:00"
+  },
+  {
+    "id": "mus_la_chute_shindo_concert",
+    "name": "La chute - Shindo - concert",
+    "code": "MUS",
+    "file": "sounds/[MUS] La chute - Shindo - concert.mp3",
+    "category": "Musiques",
+    "type": "loop",
+    "duration": 564.6,
+    "durationFormatted": "9:25"
+  },
+  {
+    "id": "mus_la_chute_shindo_extrait",
+    "name": "La chute - Shindo - extrait",
+    "code": "MUS",
+    "file": "sounds/[MUS] La chute - Shindo - extrait.mp3",
+    "category": "Musiques",
+    "type": "loop",
+    "duration": 59,
+    "durationFormatted": "59s"
+  },
+  {
+    "id": "mus_moisson",
+    "name": "Moisson",
+    "code": "MUS",
+    "file": "sounds/[MUS] Moisson.mp3",
+    "category": "Musiques",
+    "type": "loop",
+    "duration": 186.9,
+    "durationFormatted": "3:07"
+  },
+  {
+    "id": "mus_petits_secrets_feeriques",
+    "name": "Petits secrets féeriques",
+    "code": "MUS",
+    "file": "sounds/[MUS] Petits secrets féeriques.mp3",
+    "category": "Musiques",
+    "type": "loop",
+    "duration": 57.7,
+    "durationFormatted": "58s"
+  },
+  {
+    "id": "mus_piano_d_halloween",
+    "name": "Piano d'Halloween",
+    "code": "MUS",
+    "file": "sounds/[MUS] Piano d'Halloween.mp3",
+    "category": "Musiques",
+    "type": "loop",
+    "duration": 24.5,
+    "durationFormatted": "25s"
+  },
+  {
+    "id": "mus_squelettes_dansants",
+    "name": "Squelettes dansants",
+    "code": "MUS",
+    "file": "sounds/[MUS] Squelettes dansants.mp3",
+    "category": "Musiques",
+    "type": "loop",
+    "duration": 124.9,
+    "durationFormatted": "2:05"
+  },
+  {
+    "id": "obj_bois_qui_grince",
+    "name": "Bois qui grince",
+    "code": "OBJ",
+    "file": "sounds/[OBJ] Bois qui grince.mp3",
+    "category": "Objets",
+    "type": "oneshot",
+    "duration": 38.4,
+    "durationFormatted": "38s"
+  },
+  {
+    "id": "obj_cle",
+    "name": "Clé",
+    "code": "OBJ",
+    "file": "sounds/[OBJ] Clé.mp3",
+    "category": "Objets",
+    "type": "oneshot",
+    "duration": 0.6,
+    "durationFormatted": "0.6s"
+  },
+  {
+    "id": "obj_grincement",
+    "name": "Grincement",
+    "code": "OBJ",
+    "file": "sounds/[OBJ] Grincement.mp3",
+    "category": "Objets",
+    "type": "oneshot",
+    "duration": 44.5,
+    "durationFormatted": "45s"
+  },
+  {
+    "id": "obj_interrupteur_au_pied",
+    "name": "Interrupteur au pied",
+    "code": "OBJ",
+    "file": "sounds/[OBJ] Interrupteur au pied.mp3",
+    "category": "Objets",
+    "type": "oneshot",
+    "duration": 1,
+    "durationFormatted": "1.0s"
+  },
+  {
+    "id": "obj_lampe_torche",
+    "name": "Lampe torche",
+    "code": "OBJ",
+    "file": "sounds/[OBJ] Lampe torche.mp3",
+    "category": "Objets",
+    "type": "oneshot",
+    "duration": 0.7,
+    "durationFormatted": "0.7s"
+  },
+  {
+    "id": "obj_lampe_vacillante",
+    "name": "Lampe vacillante",
+    "code": "OBJ",
+    "file": "sounds/[OBJ] Lampe vacillante.mp3",
+    "category": "Objets",
+    "type": "oneshot",
+    "duration": 8.8,
+    "durationFormatted": "8.8s"
+  },
+  {
+    "id": "obj_porte_qui_s_ouvre",
+    "name": "Porte qui s'ouvre",
+    "code": "OBJ",
+    "file": "sounds/[OBJ] Porte qui s'ouvre.mp3",
+    "category": "Objets",
+    "type": "oneshot",
+    "duration": 6.3,
+    "durationFormatted": "6.3s"
+  },
+  {
+    "id": "obj_verrouille",
+    "name": "Verrouillé",
+    "code": "OBJ",
+    "file": "sounds/[OBJ] Verrouillé.mp3",
+    "category": "Objets",
+    "type": "oneshot",
+    "duration": 6.2,
+    "durationFormatted": "6.2s"
+  },
+  {
+    "id": "ora_coup_de_tonnerre",
+    "name": "Coup de tonnerre",
+    "code": "ORA",
+    "file": "sounds/[ORA] Coup de tonnerre.mp3",
+    "category": "Orages",
+    "type": "oneshot",
+    "duration": 19.1,
+    "durationFormatted": "19s"
+  },
+  {
+    "id": "ora_effets_d_halloween_avec_tonnerre_2",
+    "name": "Effets d'Halloween avec tonnerre 2",
+    "code": "ORA",
+    "file": "sounds/[ORA] Effets d'Halloween avec tonnerre 2.mp3",
+    "category": "Orages",
+    "type": "loop",
+    "duration": 120.1,
+    "durationFormatted": "2:00"
+  },
+  {
+    "id": "ora_effets_d_halloween_avec_tonnerre",
+    "name": "Effets d'Halloween avec tonnerre",
+    "code": "ORA",
+    "file": "sounds/[ORA] Effets d'Halloween avec tonnerre.mp3",
+    "category": "Orages",
+    "type": "loop",
+    "duration": 120.1,
+    "durationFormatted": "2:00"
+  },
+  {
+    "id": "ora_orage_violent",
+    "name": "Orage violent",
+    "code": "ORA",
+    "file": "sounds/[ORA] Orage violent.mp3",
+    "category": "Orages",
+    "type": "loop",
+    "duration": 20.2,
+    "durationFormatted": "20s"
+  },
+  {
+    "id": "ora_tonnerre_long",
+    "name": "Tonnerre long",
+    "code": "ORA",
+    "file": "sounds/[ORA] Tonnerre long.mp3",
+    "category": "Orages",
+    "type": "oneshot",
+    "duration": 31.5,
+    "durationFormatted": "32s"
+  },
+  {
+    "id": "ora_tonnerre",
+    "name": "Tonnerre",
+    "code": "ORA",
+    "file": "sounds/[ORA] Tonnerre.mp3",
+    "category": "Orages",
+    "type": "oneshot",
+    "duration": 5.1,
+    "durationFormatted": "5.1s"
+  },
+  {
+    "id": "sor_ricanement_de_sorciere",
+    "name": "Ricanement de sorcière",
+    "code": "SOR",
+    "file": "sounds/[SOR] Ricanement de sorcière.mp3",
+    "category": "Sorcières",
+    "type": "oneshot",
+    "duration": 7.9,
+    "durationFormatted": "7.9s"
+  },
+  {
+    "id": "sor_ricanement_ensorcele",
+    "name": "Ricanement ensorcelé",
+    "code": "SOR",
+    "file": "sounds/[SOR] Ricanement ensorcelé.mp3",
+    "category": "Sorcières",
+    "type": "oneshot",
+    "duration": 4.6,
+    "durationFormatted": "4.6s"
+  },
+  {
+    "id": "sor_rire_de_sorcier_01",
+    "name": "Rire de sorcier 01",
+    "code": "SOR",
+    "file": "sounds/[SOR] Rire de sorcier 01.mp3",
+    "category": "Sorcières",
+    "type": "oneshot",
+    "duration": 16.7,
+    "durationFormatted": "17s"
+  },
+  {
+    "id": "sor_rire_de_sorciere_malefique",
+    "name": "Rire de sorcière maléfique",
+    "code": "SOR",
+    "file": "sounds/[SOR] Rire de sorcière maléfique.mp3",
+    "category": "Sorcières",
+    "type": "oneshot",
+    "duration": 3.1,
+    "durationFormatted": "3.1s"
+  },
+  {
+    "id": "sor_rire_de_sorciere",
+    "name": "Rire de sorcière",
+    "code": "SOR",
+    "file": "sounds/[SOR] Rire de sorcière.mp3",
+    "category": "Sorcières",
+    "type": "oneshot",
+    "duration": 4.6,
+    "durationFormatted": "4.6s"
+  },
+  {
+    "id": "sor_sorciere",
+    "name": "Sorcière",
+    "code": "SOR",
+    "file": "sounds/[SOR] Sorcière.mp3",
+    "category": "Sorcières",
+    "type": "oneshot",
+    "duration": 8.1,
+    "durationFormatted": "8.1s"
+  },
+  {
+    "id": "vox_coeur_et_respiration_sous_tension",
+    "name": "Cœur et respiration sous tension",
+    "code": "VOX",
+    "file": "sounds/[VOX] Cœur et respiration sous tension.mp3",
+    "category": "Voix et cris",
+    "type": "oneshot",
+    "duration": 42,
+    "durationFormatted": "42s"
+  },
+  {
+    "id": "vox_cri_de_femme_effrayee_02",
+    "name": "Cri de femme effrayée 02",
+    "code": "VOX",
+    "file": "sounds/[VOX] Cri de femme effrayée 02.mp3",
+    "category": "Voix et cris",
+    "type": "oneshot",
+    "duration": 2.4,
+    "durationFormatted": "2.4s"
+  },
+  {
+    "id": "vox_cri",
+    "name": "Cri",
+    "code": "VOX",
+    "file": "sounds/[VOX] Cri.mp3",
+    "category": "Voix et cris",
+    "type": "oneshot",
+    "duration": 2.6,
+    "durationFormatted": "2.6s"
+  },
+  {
+    "id": "vox_hou_et_rire",
+    "name": "Hou et rire",
+    "code": "VOX",
+    "file": "sounds/[VOX] Hou et rire.mp3",
+    "category": "Voix et cris",
+    "type": "oneshot",
+    "duration": 3.6,
+    "durationFormatted": "3.6s"
+  },
+  {
+    "id": "vox_psst",
+    "name": "Psst",
+    "code": "VOX",
+    "file": "sounds/[VOX] Psst.mp3",
+    "category": "Voix et cris",
+    "type": "oneshot",
+    "duration": 0.9,
+    "durationFormatted": "0.9s"
+  },
+  {
+    "id": "vox_rire_de_possedee_2_volume_001",
+    "name": "Rire de possédée 2 - volume 001",
+    "code": "VOX",
+    "file": "sounds/[VOX] Rire de possédée 2 - volume 001.mp3",
+    "category": "Voix et cris",
+    "type": "oneshot",
+    "duration": 4.2,
+    "durationFormatted": "4.2s"
+  },
+  {
+    "id": "vox_rire_diabolique",
+    "name": "Rire diabolique",
+    "code": "VOX",
+    "file": "sounds/[VOX] Rire diabolique.mp3",
+    "category": "Voix et cris",
+    "type": "oneshot",
+    "duration": 4.7,
+    "durationFormatted": "4.7s"
+  },
+  {
+    "id": "vox_rire_feminin_horrifique_volume_006",
+    "name": "Rire féminin horrifique - volume 006",
+    "code": "VOX",
+    "file": "sounds/[VOX] Rire féminin horrifique - volume 006.mp3",
+    "category": "Voix et cris",
+    "type": "oneshot",
+    "duration": 3.8,
+    "durationFormatted": "3.8s"
+  },
+  {
+    "id": "vox_rire_inquietant_2",
+    "name": "Rire inquiétant 2",
+    "code": "VOX",
+    "file": "sounds/[VOX] Rire inquiétant 2.mp3",
+    "category": "Voix et cris",
+    "type": "oneshot",
+    "duration": 1.1,
+    "durationFormatted": "1.1s"
+  },
+  {
+    "id": "vox_rire_inquietant",
+    "name": "Rire inquiétant",
+    "code": "VOX",
+    "file": "sounds/[VOX] Rire inquiétant.mp3",
+    "category": "Voix et cris",
+    "type": "oneshot",
+    "duration": 3.6,
+    "durationFormatted": "3.6s"
+  },
+  {
+    "id": "vox_voix_inquietante",
+    "name": "Voix inquiétante",
+    "code": "VOX",
+    "file": "sounds/[VOX] Voix inquiétante.mp3",
+    "category": "Voix et cris",
+    "type": "oneshot",
+    "duration": 13.1,
+    "durationFormatted": "13s"
+  }
+]
