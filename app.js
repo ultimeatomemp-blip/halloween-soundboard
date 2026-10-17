@@ -111,6 +111,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   initRandomizerControls();
   initPresetsModal();
   initFolderScanner();
+  initKeepAwakeSystem();
   updateStereoStatusBadge();
 
   await loadSoundsDatabase();
@@ -1193,6 +1194,9 @@ function handleLoopClick(sound) {
     fadeOutAndStopLoop(AppState.activeLoopId, AppState.crossfadeDurationMs);
   }
 
+  if (!KeepAwakeManager.enabled) {
+    enableKeepAwake();
+  }
   AppState.activeLoopId = targetId;
   fadeInAndStartLoop(sound, AppState.crossfadeDurationMs);
   updateAmbienceStatusUI();
@@ -1435,6 +1439,9 @@ function initRandomizerControls() {
 }
 
 function startRandomizer() {
+  if (!KeepAwakeManager.enabled) {
+    enableKeepAwake();
+  }
   AppState.randomizer.enabled = true;
   const statusBox = document.getElementById("randomizer-status-box");
   statusBox.classList.remove("inactive");
@@ -1728,3 +1735,191 @@ function detectSoundTypeInBrowser(prefix, cleanName) {
   }
   return "oneshot";
 }
+
+/**
+ * ============================================================================
+ * 8. SYSTÈME ANTI-VEILLE & MAINTIEN AUDIO SUR SMARTPHONE VERROUILLÉ
+ * ============================================================================
+ * Combine 3 techniques complémentaires pour iOS et Android :
+ * 1. Screen Wake Lock API (`navigator.wakeLock.request('screen')`) : empêche l'écran de s'éteindre.
+ * 2. Boucle Audio HTML5 inaudible (`keepAliveAudio`) : si vous éteignez volontairement l'écran
+ *    du téléphone avec le bouton Power (pour économiser la batterie), cette piste continue
+ *    de tourner en tâche de fond pour empêcher Android/iOS de couper le Randomizer et le Bluetooth !
+ * 3. MediaSession API : affiche "Halloween FX" sur l'écran verrouillé du téléphone.
+ */
+const KeepAwakeManager = {
+  enabled: false,
+  wakeLockSentinel: null,
+  silentAudioEl: null,
+  webAudioOsc: null
+};
+
+function initKeepAwakeSystem() {
+  const btn = document.getElementById("btn-keep-awake");
+  if (!btn) return;
+
+  btn.addEventListener("click", async () => {
+    if (KeepAwakeManager.enabled) {
+      await disableKeepAwake();
+    } else {
+      await enableKeepAwake();
+    }
+  });
+
+  // Si l'utilisateur revient sur l'onglet après l'avoir réduit, on redemande le Wake Lock écran
+  document.addEventListener("visibilitychange", async () => {
+    if (KeepAwakeManager.enabled && document.visibilityState === "visible") {
+      await requestScreenWakeLock();
+      if (Howler.ctx && Howler.ctx.state === "suspended") {
+        Howler.ctx.resume();
+      }
+    }
+  });
+}
+
+async function enableKeepAwake() {
+  KeepAwakeManager.enabled = true;
+  const btn = document.getElementById("btn-keep-awake");
+
+  // 1. Débloque et maintient le contexte WebAudio de Howler actif
+  if (Howler.ctx && Howler.ctx.state === "suspended") {
+    await Howler.ctx.resume();
+  }
+
+  // 2. Demande au smartphone de ne pas éteindre l'écran automatiquement (Screen Wake Lock API)
+  await requestScreenWakeLock();
+
+  // 3. Lance une piste audio HTML5 inaudible en boucle continue :
+  // Indispensable pour que, même si on verrouille manuellement l'écran du téléphone,
+  // l'OS considère l'application comme un lecteur musical actif (comme Spotify) et ne coupe
+  // jamais les timers du Randomizer ni la connexion Bluetooth !
+  startSilentBackgroundAudio();
+
+  // 4. Déclare une MediaSession pour l'écran verrouillé du smartphone
+  if ("mediaSession" in navigator) {
+    navigator.mediaSession.metadata = new MediaMetadata({
+      title: "🎃 Halloween Soundboard Active",
+      artist: "Diffuseur d'Ambiance & Randomizer",
+      album: "Halloween FX"
+    });
+    navigator.mediaSession.setActionHandler("pause", () => {
+      stopAllSoundsImmediate();
+    });
+  }
+
+  if (btn) {
+    btn.classList.add("awake-active");
+    btn.textContent = "☀️ Anti-Veille : ON";
+  }
+}
+
+async function disableKeepAwake() {
+  KeepAwakeManager.enabled = false;
+  const btn = document.getElementById("btn-keep-awake");
+
+  if (KeepAwakeManager.wakeLockSentinel) {
+    try {
+      await KeepAwakeManager.wakeLockSentinel.release();
+    } catch (e) {}
+    KeepAwakeManager.wakeLockSentinel = null;
+  }
+
+  if (KeepAwakeManager.silentAudioEl) {
+    KeepAwakeManager.silentAudioEl.pause();
+    KeepAwakeManager.silentAudioEl = null;
+  }
+
+  if (KeepAwakeManager.webAudioOsc) {
+    try {
+      KeepAwakeManager.webAudioOsc.stop();
+      KeepAwakeManager.webAudioOsc.disconnect();
+    } catch (e) {}
+    KeepAwakeManager.webAudioOsc = null;
+  }
+
+  if (btn) {
+    btn.classList.remove("awake-active");
+    btn.textContent = "🌙 Anti-Veille : OFF";
+  }
+}
+
+async function requestScreenWakeLock() {
+  if ("wakeLock" in navigator) {
+    try {
+      KeepAwakeManager.wakeLockSentinel = await navigator.wakeLock.request("screen");
+    } catch (err) {
+      console.warn("WakeLock écran non supporté ou refusé :", err);
+    }
+  }
+}
+
+/**
+ * Génère en mémoire un mini-fichier WAV silencieux d'une seconde joué en boucle,
+ * doublé d'un oscillateur WebAudio à gain quasi-nul (0.0001) pour empêcher les enceintes
+ * Bluetooth de se mettre en veille automatique entre deux sons du Randomizer !
+ */
+function startSilentBackgroundAudio() {
+  if (!KeepAwakeManager.silentAudioEl) {
+    const wavUrl = createSilentWavDataUri();
+    const audio = new Audio(wavUrl);
+    audio.loop = true;
+    audio.volume = 0.01;
+    audio.setAttribute("playsinline", "true");
+    audio.play().catch(() => {});
+    KeepAwakeManager.silentAudioEl = audio;
+  }
+
+  if (Howler.ctx && !KeepAwakeManager.webAudioOsc) {
+    try {
+      const ctx = Howler.ctx;
+      const osc = ctx.createOscillator();
+      const gain = ctx.createGain();
+      osc.frequency.value = 30;
+      gain.gain.value = 0.0001; // Totalement inaudible mais garde le flux Bluetooth ouvert
+      osc.connect(gain);
+      gain.connect(ctx.destination);
+      osc.start();
+      KeepAwakeManager.webAudioOsc = osc;
+    } catch (e) {}
+  }
+}
+
+function createSilentWavDataUri() {
+  const sampleRate = 8000;
+  const numSamples = sampleRate; // 1 seconde
+  const buffer = new ArrayBuffer(44 + numSamples * 2);
+  const view = new DataView(buffer);
+
+  const writeString = (offset, str) => {
+    for (let i = 0; i < str.length; i++) {
+      view.setUint8(offset + i, str.charCodeAt(i));
+    }
+  };
+
+  writeString(0, "RIFF");
+  view.setUint32(4, 36 + numSamples * 2, true);
+  writeString(8, "WAVE");
+  writeString(12, "fmt ");
+  view.setUint32(16, 16, true);
+  view.setUint16(20, 1, true); // PCM
+  view.setUint16(22, 1, true); // Mono
+  view.setUint32(24, sampleRate, true);
+  view.setUint32(28, sampleRate * 2, true);
+  view.setUint16(32, 2, true);
+  view.setUint16(34, 16, true);
+  writeString(36, "data");
+  view.setUint32(40, numSamples * 2, true);
+
+  // Échantillons quasi-silencieux (évite que iOS/Android ne détecte un zéro numérique absolu)
+  for (let i = 0; i < numSamples; i++) {
+    view.setInt16(44 + i * 2, i % 2 === 0 ? 1 : -1, true);
+  }
+
+  const bytes = new Uint8Array(buffer);
+  let binary = "";
+  for (let i = 0; i < bytes.byteLength; i++) {
+    binary += String.fromCharCode(bytes[i]);
+  }
+  return "data:audio/wav;base64," + btoa(binary);
+}
+

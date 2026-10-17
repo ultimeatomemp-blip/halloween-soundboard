@@ -233,6 +233,13 @@ body {
   cursor: pointer;
 }
 
+.btn-secondary.awake-active {
+  background: rgba(46, 196, 182, 0.2);
+  color: var(--accent-green);
+  border-color: var(--accent-green);
+  box-shadow: 0 0 10px rgba(46, 196, 182, 0.35);
+}
+
 .btn-danger {
   background: var(--danger-red);
   color: #fff;
