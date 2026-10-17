@@ -536,6 +536,15 @@ function setupHowlerInstances(sounds) {
           updateDurationBadgeInDOM(sound.id, sound.durationFormatted);
         }
       },
+      onplay: function () {
+        if (!isLoop) updateOneshotCardPlayingState(sound.id, true);
+      },
+      onend: function () {
+        if (!isLoop) updateOneshotCardPlayingState(sound.id, howl.playing());
+      },
+      onstop: function () {
+        if (!isLoop) updateOneshotCardPlayingState(sound.id, false);
+      },
       onloaderror: () => {
         AppState.failedLoads.add(sound.id);
       }
@@ -543,6 +552,20 @@ function setupHowlerInstances(sounds) {
 
     AppState.howlInstances[sound.id] = howl;
   });
+}
+
+function updateOneshotCardPlayingState(soundId, isPlaying) {
+  const card = document.getElementById(`wide-pad-${soundId}`);
+  if (!card) return;
+  card.classList.toggle("playing", isPlaying);
+  const playCircle = card.querySelector(".pad-play-circle");
+  if (playCircle) {
+    playCircle.textContent = isPlaying ? "■" : "▶";
+    playCircle.classList.toggle("is-playing", isPlaying);
+    playCircle.title = isPlaying
+      ? "Recliquer ici pour couper ce son"
+      : "Cliquer pour jouer (ou couper si en cours)";
+  }
 }
 
 function formatDurationSeconds(sec) {
@@ -800,11 +823,12 @@ function renderOneshotsSection() {
     const themeCode = getThemeCode(sound);
     const isFav = AppState.favorites.has(sound.id);
     const isHidden = AppState.hiddenSounds.has(sound.id);
+    const isPlaying = AppState.howlInstances[sound.id]?.playing() || false;
     const durText = sound.durationFormatted || "--:--";
     const artworkSvg = getSoundArtworkSVG(sound);
 
     const padCard = document.createElement("div");
-    padCard.className = "sound-pad-card";
+    padCard.className = `sound-pad-card ${isPlaying ? "playing" : ""}`;
     padCard.id = `wide-pad-${sound.id}`;
     padCard.dataset.id = sound.id;
     padCard.setAttribute("data-theme", themeCode);
@@ -812,7 +836,7 @@ function renderOneshotsSection() {
     // Carte fidèle à la maquette :
     // - Vignette illustrée en haut (avec poignée ⠿ et ✕ en haut à gauche, étoile ★ en haut à droite, durée en bas à droite)
     // - Titre centré au milieu
-    // - Bandeau de déclenchement stéréo en bas avec bouton Play orange (◀ G | ▶ | D ▶)
+    // - Bandeau de déclenchement stéréo en bas avec bouton Play/Stop orange (◀ G | ▶ / ■ | D ▶)
     padCard.innerHTML = `
       <div class="pad-artwork-box">
         ${artworkSvg}
@@ -834,7 +858,7 @@ function renderOneshotsSection() {
 
       <div class="pad-stereo-trigger-bar" role="button" tabindex="0" title="Cliquer à Gauche (-1.0), au Centre (0.0) ou à Droite (+1.0)">
         <span class="pad-side-lbl">G</span>
-        <span class="pad-play-circle">▶</span>
+        <button type="button" class="pad-play-circle ${isPlaying ? "is-playing" : ""}" title="${isPlaying ? "Recliquer ici pour couper ce son" : "Cliquer pour jouer (ou couper si en cours)"}">${isPlaying ? "■" : "▶"}</button>
         <span class="pad-side-lbl">D</span>
       </div>
     `;
@@ -862,6 +886,11 @@ function renderOneshotsSection() {
       renderOneshotsSection();
     });
 
+    const dragBtn = padCard.querySelector(".drag-handle");
+    if (dragBtn) {
+      dragBtn.addEventListener("click", (e) => e.stopPropagation());
+    }
+
     // Déclenchement Panoramique Stéréo (sur le bandeau inférieur OU sur l'image hors icônes de coins)
     let startX = 0;
     let startY = 0;
@@ -883,18 +912,31 @@ function renderOneshotsSection() {
       if (AppState.dragModeEnabled || AppState.isDraggingNow) return;
       if (Math.abs(e.clientX - startX) > 15 || Math.abs(e.clientY - startY) > 15) return;
 
-      // Calcul de la coordonnée X sur le bandeau de déclenchement (ou la carte)
-      const triggerBar = padCard.querySelector(".pad-stereo-trigger-bar");
-      const targetRect = e.target.closest(".pad-stereo-trigger-bar")
-        ? triggerBar.getBoundingClientRect()
-        : padCard.getBoundingClientRect();
+      const howl = AppState.howlInstances[sound.id];
+      const clickedPlayCircle = Boolean(e.target.closest(".pad-play-circle"));
 
-      const relX = Math.max(0, Math.min(e.clientX - targetRect.left, targetRect.width));
-      const normalizedX = (relX / targetRect.width) * 2 - 1;
-      const pan = Math.max(
-        -1,
-        Math.min(1, Math.sign(normalizedX) * Math.pow(Math.abs(normalizedX), PAD_SENSITIVITY_CURVE))
-      );
+      // Si le son est en cours de lecture et qu'on reclique sur le bouton rond Play/Stop (■), on coupe ce son immédiatement !
+      if (clickedPlayCircle && howl && howl.playing()) {
+        howl.stop();
+        updateOneshotCardPlayingState(sound.id, false);
+        return;
+      }
+
+      // Calcul de la coordonnée X sur le bandeau de déclenchement (ou la carte)
+      let pan = 0.0;
+      if (!clickedPlayCircle) {
+        const triggerBar = padCard.querySelector(".pad-stereo-trigger-bar");
+        const targetRect = e.target.closest(".pad-stereo-trigger-bar")
+          ? triggerBar.getBoundingClientRect()
+          : padCard.getBoundingClientRect();
+
+        const relX = Math.max(0, Math.min(e.clientX - targetRect.left, targetRect.width));
+        const normalizedX = (relX / targetRect.width) * 2 - 1;
+        pan = Math.max(
+          -1,
+          Math.min(1, Math.sign(normalizedX) * Math.pow(Math.abs(normalizedX), PAD_SENSITIVITY_CURVE))
+        );
+      }
 
       const cardRect = padCard.getBoundingClientRect();
       spawnRippleOnCard(padCard, e.clientX - cardRect.left, e.clientY - cardRect.top);
