@@ -664,12 +664,13 @@ function initOneshotFiltersAndToolbar() {
       AppState.dragModeEnabled = !AppState.dragModeEnabled;
       document.body.classList.toggle("drag-mode-active", AppState.dragModeEnabled);
       dragModeBtn.classList.toggle("active", AppState.dragModeEnabled);
-      dragModeBtn.textContent = AppState.dragModeEnabled
-        ? "🖐️ Déplacer les Pads : ON"
-        : "🖐️ Déplacer les Pads : OFF";
+      dragModeBtn.innerHTML = AppState.dragModeEnabled
+        ? `<span>🖐️</span><span class="drag-btn-txt">Déplacer : ON</span>`
+        : `<span>🖐️</span><span class="drag-btn-txt">Déplacer</span>`;
 
-      if (AppState.oneshotSortable) {
-        AppState.oneshotSortable.option("handle", AppState.dragModeEnabled ? ".sound-pad-card" : ".drag-handle");
+      const container = document.getElementById("oneshots-container");
+      if (container) {
+        initOneshotSortableGrid(container);
       }
     });
   }
@@ -922,14 +923,24 @@ function initOneshotSortableGrid(container) {
   AppState.oneshotSortable = new Sortable(container, {
     animation: 180,
     handle: AppState.dragModeEnabled ? ".sound-pad-card" : ".drag-handle",
+    delay: AppState.dragModeEnabled ? 80 : 0,
+    delayOnTouchOnly: true,
+    touchStartThreshold: 4,
+    forceFallback: true,
+    fallbackOnBody: true,
+    fallbackClass: "sortable-fallback",
+    fallbackTolerance: 4,
     ghostClass: "sortable-ghost",
+    scroll: true,
+    scrollSensitivity: 65,
+    scrollSpeed: 14,
     onStart: () => {
       AppState.isDraggingNow = true;
     },
     onEnd: () => {
       setTimeout(() => {
         AppState.isDraggingNow = false;
-      }, 80);
+      }, 120);
 
       const currentDomIds = Array.from(container.querySelectorAll(".sound-pad-card")).map(
         (el) => el.dataset.id
@@ -1193,14 +1204,22 @@ function initLoopSortableGrid(container) {
   AppState.loopSortable = new Sortable(container, {
     animation: 180,
     handle: ".drag-handle",
+    touchStartThreshold: 4,
+    forceFallback: true,
+    fallbackOnBody: true,
+    fallbackClass: "sortable-fallback",
+    fallbackTolerance: 4,
     ghostClass: "sortable-ghost",
+    scroll: true,
+    scrollSensitivity: 65,
+    scrollSpeed: 14,
     onStart: () => {
       AppState.isDraggingNow = true;
     },
     onEnd: () => {
       setTimeout(() => {
         AppState.isDraggingNow = false;
-      }, 80);
+      }, 120);
 
       const currentDomIds = Array.from(container.querySelectorAll(".sound-pad-card")).map(
         (el) => el.dataset.id

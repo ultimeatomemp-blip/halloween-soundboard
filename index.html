@@ -129,18 +129,22 @@
             </div>
           </div>
 
-          <!-- Barre de recherche + Bouton Filtres avancés (Tri durée, Mode déplacement, Masqués) -->
+          <!-- Barre de recherche + Bouton Déplacer direct + Bouton Filtres avancés -->
           <div class="search-and-filter-row">
             <div class="search-input-wrap">
               <span class="search-magnifier">🔍</span>
               <input type="search" id="oneshot-search" placeholder="Rechercher un son...">
             </div>
-            <button type="button" id="btn-toggle-advanced-filters" class="btn-filter-funnel" title="Afficher les options de tri par durée, déplacement et sons masqués">
+            <button type="button" id="btn-toggle-drag-mode" class="btn-drag-QuickToggle" title="Activer pour déplacer librement les pads au doigt sans déclencher de son">
+              <span>🖐️</span>
+              <span class="drag-btn-txt">Déplacer</span>
+            </button>
+            <button type="button" id="btn-toggle-advanced-filters" class="btn-filter-funnel" title="Afficher les options de tri par durée, favoris et sons masqués">
               <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"></polygon></svg>
             </button>
           </div>
 
-          <!-- Tiroir d'options avancées (Tri par durée, Filtre durée, Mode Glisser-Déposer, Favoris, Masqués) -->
+          <!-- Tiroir d'options avancées (Tri par durée, Filtre durée, Favoris, Masqués) -->
           <div id="advanced-filters-drawer" class="advanced-filters-drawer" style="display: none;">
             <div class="drawer-row">
               <div class="sort-box">
@@ -165,9 +169,6 @@
 
             <div class="drawer-row">
               <div class="filter-group">
-                <button id="btn-toggle-drag-mode" class="filter-chip drag-mode-chip" title="Verrouiller les sons pour déplacer librement les pads sans les déclencher">
-                  🖐️ Déplacer les Pads : OFF
-                </button>
                 <button id="btn-filter-favorites" class="filter-chip fav-chip">
                   ⭐ Favoris (<span id="fav-count">0</span>)
                 </button>
@@ -343,8 +344,14 @@
                 <strong><span id="rand-delay-min-val">5</span>s – <span id="rand-delay-max-val">20</span>s</strong>
               </div>
               <div class="dual-range-stack">
-                <input type="range" id="rand-delay-min" min="1" max="120" step="1" value="5" title="Délai minimum">
-                <input type="range" id="rand-delay-max" min="2" max="180" step="1" value="20" title="Délai maximum">
+                <div class="dual-slider-row">
+                  <span class="slider-min-max-tag">Min</span>
+                  <input type="range" id="rand-delay-min" min="1" max="120" step="1" value="5" title="Délai minimum">
+                </div>
+                <div class="dual-slider-row">
+                  <span class="slider-min-max-tag">Max</span>
+                  <input type="range" id="rand-delay-max" min="2" max="180" step="1" value="20" title="Délai maximum">
+                </div>
               </div>
             </div>
 
@@ -355,8 +362,14 @@
                 <strong><span id="rand-vol-min-val">30%</span> – <span id="rand-vol-max-val">100%</span></strong>
               </div>
               <div class="dual-range-stack">
-                <input type="range" id="rand-vol-min" min="0.05" max="1" step="0.05" value="0.3" title="Volume minimum">
-                <input type="range" id="rand-vol-max" min="0.05" max="1" step="0.05" value="1.0" title="Volume maximum">
+                <div class="dual-slider-row">
+                  <span class="slider-min-max-tag">Min</span>
+                  <input type="range" id="rand-vol-min" min="0.05" max="1" step="0.05" value="0.3" title="Volume minimum">
+                </div>
+                <div class="dual-slider-row">
+                  <span class="slider-min-max-tag">Max</span>
+                  <input type="range" id="rand-vol-max" min="0.05" max="1" step="0.05" value="1.0" title="Volume maximum">
+                </div>
               </div>
             </div>
 
