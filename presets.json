@@ -1,0 +1,67 @@
+{
+  "🎃 Accueil Cimetière": {
+    "version": 3,
+    "savedAt": "2026-10-18T16:00:00.000Z",
+    "activeLoopId": "amb_cimetiere_hante_en_boucle",
+    "activeLoopPlaying": true,
+    "masterVolume": 1,
+    "oneshotVolume": 1,
+    "loopVolume": 0.65,
+    "crossfadeDurationMs": 2000,
+    "oneshotSortMode": "CUSTOM",
+    "loopSortMode": "CUSTOM",
+    "favorites": [],
+    "hiddenSounds": [],
+    "customOrderOneshots": [],
+    "customOrderLoops": [],
+    "randomizer": {
+      "enabled": false,
+      "delayMinSec": 8,
+      "delayMaxSec": 25,
+      "volMin": 0.35,
+      "volMax": 0.9,
+      "randomStereo": true,
+      "fixedPan": 0,
+      "onlyFavorites": false,
+      "allowedCategories": [
+        "Animaux",
+        "Fantômes",
+        "Voix et cris",
+        "Orages"
+      ]
+    }
+  },
+  "👻 Maison Hantée (Auto)": {
+    "version": 3,
+    "savedAt": "2026-10-18T16:00:00.000Z",
+    "activeLoopId": "amb_maison_hantee",
+    "activeLoopPlaying": true,
+    "masterVolume": 1,
+    "oneshotVolume": 1,
+    "loopVolume": 0.6,
+    "crossfadeDurationMs": 2500,
+    "oneshotSortMode": "CUSTOM",
+    "loopSortMode": "CUSTOM",
+    "favorites": [],
+    "hiddenSounds": [],
+    "customOrderOneshots": [],
+    "customOrderLoops": [],
+    "randomizer": {
+      "enabled": true,
+      "delayMinSec": 6,
+      "delayMaxSec": 18,
+      "volMin": 0.3,
+      "volMax": 0.85,
+      "randomStereo": true,
+      "fixedPan": 0,
+      "onlyFavorites": false,
+      "allowedCategories": [
+        "Fantômes",
+        "Objets",
+        "Voix et cris",
+        "Monstres",
+        "Sorcières"
+      ]
+    }
+  }
+}

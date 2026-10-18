@@ -272,7 +272,10 @@ function getSoundArtworkSVG(sound) {
  * ============================================================================
  */
 document.addEventListener("DOMContentLoaded", async () => {
+  await loadSoundsDatabase();
+  await loadSharedPresetsAndUrlImport();
   loadActiveConfiguration();
+
   initMainTabsAndAccordions();
   initMasterAndAmbienceControls();
   initOneshotFiltersAndToolbar();
@@ -282,14 +285,20 @@ document.addEventListener("DOMContentLoaded", async () => {
   initFolderScanner();
   initKeepAwakeSystem();
   updateStereoStatusBadge();
-
-  await loadSoundsDatabase();
+  renderQuickPresetsBar();
 });
 
 function serializeCurrentConfig() {
+  const quickSelectVal = document.getElementById("ambience-quick-select")?.value || null;
+  const currentAmbienceId = AppState.activeLoopId || quickSelectVal || null;
+  const masterSlider = document.getElementById("master-volume");
+
   return {
-    version: 2,
+    version: 3,
     savedAt: new Date().toISOString(),
+    activeLoopId: currentAmbienceId,
+    activeLoopPlaying: Boolean(AppState.activeLoopId || quickSelectVal),
+    masterVolume: masterSlider ? parseFloat(masterSlider.value) : 1.0,
     favorites: [...AppState.favorites],
     hiddenSounds: [...AppState.hiddenSounds],
     customOrderOneshots: AppState.customOrderOneshots,
@@ -300,6 +309,7 @@ function serializeCurrentConfig() {
     loopVolume: AppState.loopVolume,
     crossfadeDurationMs: AppState.crossfadeDurationMs,
     randomizer: {
+      enabled: Boolean(AppState.randomizer.enabled),
       delayMinSec: AppState.randomizer.delayMinSec,
       delayMaxSec: AppState.randomizer.delayMaxSec,
       volMin: AppState.randomizer.volMin,
@@ -312,7 +322,7 @@ function serializeCurrentConfig() {
   };
 }
 
-function applyConfigurationObject(cfg) {
+function applyConfigurationObject(cfg, options = { launchAmbience: false }) {
   if (!cfg) return;
   AppState.favorites = new Set(cfg.favorites || []);
   AppState.hiddenSounds = new Set(cfg.hiddenSounds || []);
@@ -330,6 +340,14 @@ function applyConfigurationObject(cfg) {
     if (selLoop) selLoop.value = cfg.loopSortMode;
   }
 
+  if (typeof cfg.masterVolume === "number") {
+    const ms = document.getElementById("master-volume");
+    const ml = document.getElementById("master-volume-val");
+    if (ms) ms.value = cfg.masterVolume;
+    if (ml) ml.textContent = `${Math.round(cfg.masterVolume * 100)}%`;
+    Howler.volume(cfg.masterVolume);
+  }
+
   if (typeof cfg.oneshotVolume === "number") {
     AppState.oneshotVolume = cfg.oneshotVolume;
     const s = document.getElementById("oneshot-volume");
@@ -344,6 +362,9 @@ function applyConfigurationObject(cfg) {
     const l = document.getElementById("loop-master-volume-val");
     if (s) s.value = cfg.loopVolume;
     if (l) l.textContent = `${Math.round(cfg.loopVolume * 100)}%`;
+    if (AppState.activeLoopId && AppState.howlInstances[AppState.activeLoopId]) {
+      AppState.howlInstances[AppState.activeLoopId].volume(cfg.loopVolume);
+    }
   }
 
   if (typeof cfg.crossfadeDurationMs === "number") {
@@ -358,34 +379,54 @@ function applyConfigurationObject(cfg) {
     const r = cfg.randomizer;
     if (r.delayMinSec) {
       AppState.randomizer.delayMinSec = r.delayMinSec;
-      document.getElementById("rand-delay-min").value = r.delayMinSec;
-      document.getElementById("rand-delay-min-val").textContent = r.delayMinSec;
+      const el = document.getElementById("rand-delay-min");
+      const valEl = document.getElementById("rand-delay-min-val");
+      if (el) el.value = r.delayMinSec;
+      if (valEl) valEl.textContent = r.delayMinSec;
     }
     if (r.delayMaxSec) {
       AppState.randomizer.delayMaxSec = r.delayMaxSec;
-      document.getElementById("rand-delay-max").value = r.delayMaxSec;
-      document.getElementById("rand-delay-max-val").textContent = r.delayMaxSec;
+      const el = document.getElementById("rand-delay-max");
+      const valEl = document.getElementById("rand-delay-max-val");
+      if (el) el.value = r.delayMaxSec;
+      if (valEl) valEl.textContent = r.delayMaxSec;
     }
     if (r.volMin) {
       AppState.randomizer.volMin = r.volMin;
-      document.getElementById("rand-vol-min").value = r.volMin;
-      document.getElementById("rand-vol-min-val").textContent = `${Math.round(r.volMin * 100)}%`;
+      const el = document.getElementById("rand-vol-min");
+      const valEl = document.getElementById("rand-vol-min-val");
+      if (el) el.value = r.volMin;
+      if (valEl) valEl.textContent = `${Math.round(r.volMin * 100)}%`;
     }
     if (r.volMax) {
       AppState.randomizer.volMax = r.volMax;
-      document.getElementById("rand-vol-max").value = r.volMax;
-      document.getElementById("rand-vol-max-val").textContent = `${Math.round(r.volMax * 100)}%`;
+      const el = document.getElementById("rand-vol-max");
+      const valEl = document.getElementById("rand-vol-max-val");
+      if (el) el.value = r.volMax;
+      if (valEl) valEl.textContent = `${Math.round(r.volMax * 100)}%`;
     }
     if (typeof r.randomStereo === "boolean") {
       AppState.randomizer.randomStereo = r.randomStereo;
-      document.getElementById("rand-stereo-random").checked = r.randomStereo;
+      const el = document.getElementById("rand-stereo-random");
+      if (el) el.checked = r.randomStereo;
     }
     if (typeof r.onlyFavorites === "boolean") {
       AppState.randomizer.onlyFavorites = r.onlyFavorites;
-      document.getElementById("rand-only-favorites").checked = r.onlyFavorites;
+      const el = document.getElementById("rand-only-favorites");
+      if (el) el.checked = r.onlyFavorites;
     }
     if (Array.isArray(r.allowedCategories) && r.allowedCategories.length > 0) {
       AppState.randomizer.allowedCategories = new Set(r.allowedCategories);
+    }
+
+    if (options.launchAmbience && typeof r.enabled === "boolean") {
+      const randToggle = document.getElementById("randomizer-toggle");
+      if (randToggle) randToggle.checked = r.enabled;
+      if (r.enabled && !AppState.randomizer.enabled) {
+        startRandomizer();
+      } else if (!r.enabled && AppState.randomizer.enabled) {
+        stopRandomizer();
+      }
     }
   }
 
@@ -395,6 +436,38 @@ function applyConfigurationObject(cfg) {
     renderRandomizerCategories(AppState.soundsData);
     renderOneshotsSection();
     renderLoopsSection();
+  }
+
+  // Si on charge un Preset explicitement, on lance (ou coupe) aussi son ambiance d'arrière-plan !
+  if (options.launchAmbience) {
+    if (cfg.activeLoopId) {
+      const targetLoop = AppState.soundsData.find(
+        (s) => s.id === cfg.activeLoopId && s.type === "loop"
+      );
+      if (targetLoop) {
+        const quickSelect = document.getElementById("ambience-quick-select");
+        if (quickSelect) quickSelect.value = targetLoop.id;
+
+        if (cfg.activeLoopPlaying !== false) {
+          if (AppState.activeLoopId !== targetLoop.id) {
+            handleLoopClick(targetLoop);
+          } else {
+            const howl = AppState.howlInstances[targetLoop.id];
+            if (howl && !howl.playing()) {
+              fadeInAndStartLoop(targetLoop, AppState.crossfadeDurationMs);
+            }
+            updateAmbienceStatusUI();
+          }
+        } else {
+          const thumbBox = document.getElementById("active-loop-thumb");
+          if (thumbBox) thumbBox.innerHTML = getSoundArtworkSVG(targetLoop);
+        }
+      }
+    } else if (AppState.activeLoopId) {
+      fadeOutAndStopLoop(AppState.activeLoopId, AppState.crossfadeDurationMs);
+      AppState.activeLoopId = null;
+      updateAmbienceStatusUI();
+    }
   }
 }
 
@@ -409,7 +482,7 @@ function loadActiveConfiguration() {
   try {
     const raw = localStorage.getItem(STORAGE_KEYS.ACTIVE_CONFIG);
     if (raw) {
-      applyConfigurationObject(JSON.parse(raw));
+      applyConfigurationObject(JSON.parse(raw), { launchAmbience: false });
     }
   } catch (e) {}
 }
@@ -963,19 +1036,22 @@ function initOneshotSortableGrid(container) {
   }
 
   AppState.oneshotSortable = new Sortable(container, {
-    animation: 180,
-    handle: AppState.dragModeEnabled ? ".sound-pad-card" : ".drag-handle",
-    delay: AppState.dragModeEnabled ? 80 : 0,
+    animation: 150,
+    draggable: ".sound-pad-card",
+    filter: ".btn-fav, .btn-hide, .pad-play-circle",
+    preventOnFilter: false,
+    delay: AppState.dragModeEnabled ? 0 : 160,
     delayOnTouchOnly: true,
     touchStartThreshold: 4,
     forceFallback: true,
     fallbackOnBody: true,
     fallbackClass: "sortable-fallback",
-    fallbackTolerance: 4,
+    dragClass: "sortable-drag",
+    fallbackTolerance: AppState.dragModeEnabled ? 2 : 6,
     ghostClass: "sortable-ghost",
     scroll: true,
-    scrollSensitivity: 65,
-    scrollSpeed: 14,
+    scrollSensitivity: 70,
+    scrollSpeed: 16,
     onStart: () => {
       AppState.isDraggingNow = true;
     },
@@ -1244,17 +1320,22 @@ function initLoopSortableGrid(container) {
   }
 
   AppState.loopSortable = new Sortable(container, {
-    animation: 180,
-    handle: ".drag-handle",
+    animation: 150,
+    draggable: ".sound-pad-card",
+    filter: ".btn-fav, .btn-hide",
+    preventOnFilter: false,
+    delay: 160,
+    delayOnTouchOnly: true,
     touchStartThreshold: 4,
     forceFallback: true,
     fallbackOnBody: true,
     fallbackClass: "sortable-fallback",
-    fallbackTolerance: 4,
+    dragClass: "sortable-drag",
+    fallbackTolerance: 6,
     ghostClass: "sortable-ghost",
     scroll: true,
-    scrollSensitivity: 65,
-    scrollSpeed: 14,
+    scrollSensitivity: 70,
+    scrollSpeed: 16,
     onStart: () => {
       AppState.isDraggingNow = true;
     },
@@ -1824,12 +1905,120 @@ function initMainTabsAndAccordions() {
   });
 }
 
+async function loadSharedPresetsAndUrlImport() {
+  const presets = getSavedPresetsMap();
+
+  // 1. Vérifie si l'utilisateur vient de scanner un QR Code / Lien Magique (?importPresets=...)
+  try {
+    const params = new URLSearchParams(window.location.search);
+    const encoded = params.get("importPresets");
+    if (encoded) {
+      const jsonStr = decodeURIComponent(escape(atob(encoded)));
+      const importedMap = JSON.parse(jsonStr);
+      if (importedMap && typeof importedMap === "object") {
+        Object.assign(presets, importedMap);
+        localStorage.setItem(STORAGE_KEYS.SAVED_PRESETS, JSON.stringify(presets));
+        const cleanUrl = window.location.origin + window.location.pathname;
+        window.history.replaceState({}, document.title, cleanUrl);
+        setTimeout(() => {
+          alert(`🎃 ${Object.keys(importedMap).length} Preset(s) importé(s) avec succès sur cet appareil !`);
+        }, 250);
+      }
+    }
+  } catch (err) {
+    console.warn("Erreur lors de l'import des presets depuis l'URL :", err);
+  }
+
+  // 2. Charge automatiquement le fichier partagé presets.json du dépôt GitHub (pour synchroniser PC -> Tél/Tablette)
+  if (window.location.protocol !== "file:") {
+    try {
+      const resp = await fetch("./presets.json", { cache: "no-store" });
+      if (resp.ok) {
+        const sharedPresets = await resp.json();
+        if (sharedPresets && typeof sharedPresets === "object") {
+          let changed = false;
+          Object.entries(sharedPresets).forEach(([name, cfg]) => {
+            if (!presets[name]) {
+              presets[name] = cfg;
+              changed = true;
+            }
+          });
+          if (changed) {
+            localStorage.setItem(STORAGE_KEYS.SAVED_PRESETS, JSON.stringify(presets));
+          }
+        }
+      }
+    } catch (e) {}
+  }
+}
+
+function getLoopLabelById(loopId) {
+  if (!loopId) return "Silence";
+  const found = AppState.soundsData.find((s) => s.id === loopId);
+  return found ? getDisplayName(found) : loopId;
+}
+
+function updateModalAmbiencePreviewBadge() {
+  const badgeStrong = document.getElementById("preset-current-ambience-name");
+  if (!badgeStrong) return;
+  const quickSelectVal = document.getElementById("ambience-quick-select")?.value || null;
+  const currentAmbienceId = AppState.activeLoopId || quickSelectVal || null;
+  badgeStrong.textContent = currentAmbienceId
+    ? `${getLoopLabelById(currentAmbienceId)} (Lecture auto)`
+    : "Aucune (Silence)";
+}
+
+function renderQuickPresetsBar() {
+  const container = document.getElementById("quick-presets-pills");
+  if (!container) return;
+
+  const presets = getSavedPresetsMap();
+  const names = Object.keys(presets);
+  container.innerHTML = "";
+
+  if (names.length === 0) {
+    container.innerHTML = `<span style="font-size: 0.74rem; color: var(--text-muted);">Aucun preset — cliquez sur "➕ Sauver" pour créer votre 1er preset avec ambiance !</span>`;
+    return;
+  }
+
+  names.forEach((name) => {
+    const cfg = presets[name];
+    const ambName = cfg?.activeLoopId ? getLoopLabelById(cfg.activeLoopId) : "Silence";
+    const shortAmb = ambName.length > 18 ? ambName.slice(0, 17) + "…" : ambName;
+
+    const pill = document.createElement("button");
+    pill.type = "button";
+    pill.className = `preset-quick-pill ${AppState.activePresetName === name ? "active" : ""}`;
+    pill.title = `Charger le Preset "${name}" (Ambiance : ${ambName})`;
+    pill.innerHTML = `
+      <span>${name}</span>
+      <span class="preset-pill-amb-tag">🎵 ${shortAmb}</span>
+    `;
+
+    pill.addEventListener("click", () => {
+      AppState.activePresetName = name;
+      applyConfigurationObject(cfg, { launchAmbience: true });
+      renderQuickPresetsBar();
+    });
+
+    container.appendChild(pill);
+  });
+}
+
 function initPresetsModal() {
   const modal = document.getElementById("presets-modal");
   const openBtn = document.getElementById("btn-open-presets");
+  const quickSaveBtn = document.getElementById("btn-quick-save-preset");
+  const quickSyncBtn = document.getElementById("btn-quick-sync-presets");
   const closeBtn = document.getElementById("btn-close-presets");
   const saveBtn = document.getElementById("btn-save-preset");
   const nameInput = document.getElementById("preset-name-input");
+  const saveProjectBtn = document.getElementById("btn-save-presets-project");
+  const qrBtn = document.getElementById("btn-generate-qr-sync");
+  const qrPanel = document.getElementById("qr-sync-panel");
+  const qrImg = document.getElementById("qr-code-img");
+  const qrInput = document.getElementById("qr-magic-link-input");
+  const copyLinkBtn = document.getElementById("btn-copy-magic-link");
   const exportFileBtn = document.getElementById("btn-export-config-file");
   const importFileBtn = document.getElementById("btn-import-config-file");
   const importInput = document.getElementById("import-config-input");
@@ -1837,10 +2026,39 @@ function initPresetsModal() {
 
   if (!modal || !openBtn) return;
 
-  openBtn.addEventListener("click", () => {
+  const openModalWithPreview = () => {
+    updateModalAmbiencePreviewBadge();
     renderSavedPresetsList();
+    if (qrPanel) qrPanel.style.display = "none";
     modal.style.display = "flex";
-  });
+  };
+
+  openBtn.addEventListener("click", openModalWithPreview);
+  if (quickSyncBtn) {
+    quickSyncBtn.addEventListener("click", openModalWithPreview);
+  }
+
+  // Bouton rapide "➕ Sauver" directement depuis la barre principale
+  if (quickSaveBtn) {
+    quickSaveBtn.addEventListener("click", () => {
+      const quickSelectVal = document.getElementById("ambience-quick-select")?.value || null;
+      const currentAmbId = AppState.activeLoopId || quickSelectVal || null;
+      const ambLabel = currentAmbId ? getLoopLabelById(currentAmbId) : "Sans ambiance";
+      const suggested = `🎃 ${ambLabel}`;
+      const chosenName = prompt(
+        `Nom du nouveau Preset à enregistrer\n(Ambiance incluse : ${ambLabel}) :`,
+        suggested
+      );
+      if (!chosenName || !chosenName.trim()) return;
+      const cleanName = chosenName.trim();
+      const presets = getSavedPresetsMap();
+      presets[cleanName] = serializeCurrentConfig();
+      localStorage.setItem(STORAGE_KEYS.SAVED_PRESETS, JSON.stringify(presets));
+      AppState.activePresetName = cleanName;
+      renderQuickPresetsBar();
+      renderSavedPresetsList();
+    });
+  }
 
   closeBtn.addEventListener("click", () => {
     modal.style.display = "none";
@@ -1851,22 +2069,123 @@ function initPresetsModal() {
   });
 
   saveBtn.addEventListener("click", () => {
-    const name = (nameInput.value || "").trim() || `Config du ${new Date().toLocaleTimeString("fr-FR")}`;
+    const quickSelectVal = document.getElementById("ambience-quick-select")?.value || null;
+    const currentAmbId = AppState.activeLoopId || quickSelectVal || null;
+    const defaultLabel = currentAmbId
+      ? `🎃 ${getLoopLabelById(currentAmbId)}`
+      : `Config ${new Date().toLocaleTimeString("fr-FR")}`;
+    const name = (nameInput.value || "").trim() || defaultLabel;
     const presets = getSavedPresetsMap();
     presets[name] = serializeCurrentConfig();
     localStorage.setItem(STORAGE_KEYS.SAVED_PRESETS, JSON.stringify(presets));
+    AppState.activePresetName = name;
     nameInput.value = "";
     renderSavedPresetsList();
+    renderQuickPresetsBar();
   });
 
+  // Sauvegarder presets.json dans le dossier GitHub pour que tous les appareils (Tél, Tablette, PC) l'aient automatiquement !
+  if (saveProjectBtn) {
+    saveProjectBtn.addEventListener("click", async () => {
+      const presets = getSavedPresetsMap();
+      const jsonContent = JSON.stringify(presets, null, 2);
+
+      if (window.showSaveFilePicker) {
+        try {
+          const handle = await window.showSaveFilePicker({
+            suggestedName: "presets.json",
+            types: [
+              {
+                description: "Fichier Presets Halloween FX",
+                accept: { "application/json": [".json"] }
+              }
+            ]
+          });
+          const writable = await handle.createWritable();
+          await writable.write(jsonContent);
+          await writable.close();
+          alert(
+            "✅ Fichier presets.json enregistré !\nIl vous suffit maintenant de faire 'Commit' + 'Push' dans GitHub Desktop pour retrouver tous vos Presets sur votre téléphone et votre tablette."
+          );
+          return;
+        } catch (err) {
+          if (err.name === "AbortError") return;
+        }
+      }
+
+      const blob = new Blob([jsonContent], { type: "application/json;charset=utf-8" });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = "presets.json";
+      a.click();
+      URL.revokeObjectURL(url);
+    });
+  }
+
+  // Générer un QR Code + Lien Magique pour envoyer tous les Presets du PC vers le Téléphone en 2 secondes !
+  if (qrBtn && qrPanel && qrImg && qrInput) {
+    qrBtn.addEventListener("click", () => {
+      const presets = getSavedPresetsMap();
+      if (Object.keys(presets).length === 0) {
+        alert("Enregistrez d'abord au moins un Preset avant de générer le QR Code.");
+        return;
+      }
+
+      // On crée une version allégée des presets pour que le QR Code reste ultra-compact et rapide à scanner
+      const compactPresets = {};
+      Object.entries(presets).forEach(([k, v]) => {
+        compactPresets[k] = {
+          version: 3,
+          activeLoopId: v.activeLoopId || null,
+          activeLoopPlaying: v.activeLoopPlaying !== false,
+          masterVolume: v.masterVolume ?? 1,
+          oneshotVolume: v.oneshotVolume ?? 1,
+          loopVolume: v.loopVolume ?? 0.7,
+          crossfadeDurationMs: v.crossfadeDurationMs ?? 2000,
+          oneshotSortMode: v.oneshotSortMode || "CUSTOM",
+          loopSortMode: v.loopSortMode || "CUSTOM",
+          favorites: v.favorites || [],
+          hiddenSounds: v.hiddenSounds || [],
+          customOrderOneshots: (v.customOrderOneshots || []).slice(0, 40),
+          randomizer: v.randomizer
+        };
+      });
+
+      const encoded = btoa(unescape(encodeURIComponent(JSON.stringify(compactPresets))));
+      const baseUrl =
+        window.location.protocol === "file:"
+          ? "https://ultimeatomemp-blip.github.io/halloween-soundboard/"
+          : window.location.origin + window.location.pathname;
+      const magicUrl = `${baseUrl}?importPresets=${encodeURIComponent(encoded)}`;
+
+      qrInput.value = magicUrl;
+      qrImg.src = `https://api.qrserver.com/v1/create-qr-code/?size=180x180&margin=6&data=${encodeURIComponent(magicUrl)}`;
+      qrPanel.style.display = "flex";
+    });
+  }
+
+  if (copyLinkBtn && qrInput) {
+    copyLinkBtn.addEventListener("click", () => {
+      qrInput.select();
+      navigator.clipboard?.writeText(qrInput.value);
+      copyLinkBtn.textContent = "✅ Lien copié !";
+      setTimeout(() => {
+        copyLinkBtn.textContent = "📋 Copier le lien";
+      }, 2000);
+    });
+  }
+
   exportFileBtn.addEventListener("click", () => {
-    const blob = new Blob([JSON.stringify(serializeCurrentConfig(), null, 2)], {
+    const presets = getSavedPresetsMap();
+    const payload = Object.keys(presets).length > 0 ? presets : { "Ma Config": serializeCurrentConfig() };
+    const blob = new Blob([JSON.stringify(payload, null, 2)], {
       type: "application/json;charset=utf-8"
     });
     const url = URL.createObjectURL(blob);
     const a = document.createElement("a");
     a.href = url;
-    a.download = "halloween-fx-config.json";
+    a.download = "presets.json";
     a.click();
     URL.revokeObjectURL(url);
   });
@@ -1878,8 +2197,18 @@ function initPresetsModal() {
     const reader = new FileReader();
     reader.onload = (ev) => {
       try {
-        const cfg = JSON.parse(ev.target.result);
-        applyConfigurationObject(cfg);
+        const parsed = JSON.parse(ev.target.result);
+        if (parsed && typeof parsed === "object" && !Array.isArray(parsed)) {
+          if (parsed.version && (parsed.favorites || parsed.randomizer)) {
+            applyConfigurationObject(parsed, { launchAmbience: true });
+          } else {
+            const presets = getSavedPresetsMap();
+            Object.assign(presets, parsed);
+            localStorage.setItem(STORAGE_KEYS.SAVED_PRESETS, JSON.stringify(presets));
+            renderSavedPresetsList();
+            renderQuickPresetsBar();
+          }
+        }
         modal.style.display = "none";
       } catch (err) {
         alert("Fichier de configuration invalide.");
@@ -1896,9 +2225,11 @@ function initPresetsModal() {
     AppState.customOrderLoops = [];
     AppState.oneshotSortMode = "CUSTOM";
     AppState.loopSortMode = "CUSTOM";
+    AppState.activePresetName = null;
     saveActiveConfiguration();
     renderOneshotsSection();
     renderLoopsSection();
+    renderQuickPresetsBar();
     modal.style.display = "none";
   });
 }
@@ -1918,31 +2249,49 @@ function renderSavedPresetsList() {
   const names = Object.keys(presets);
 
   if (names.length === 0) {
-    listEl.innerHTML = `<div style="color: var(--text-muted); font-size: 0.8rem; padding: 0.5rem;">Aucun profil enregistré pour l'instant.</div>`;
+    listEl.innerHTML = `<div style="color: var(--text-muted); font-size: 0.8rem; padding: 0.5rem;">Aucun Preset enregistré pour l'instant.</div>`;
     return;
   }
 
   listEl.innerHTML = "";
   names.forEach((name) => {
+    const cfg = presets[name];
+    const ambLabel = cfg?.activeLoopId ? getLoopLabelById(cfg.activeLoopId) : "Silence";
     const row = document.createElement("div");
     row.className = "preset-item";
     row.innerHTML = `
-      <span style="font-weight:700; font-size:0.85rem;">🎃 ${name}</span>
-      <div style="display:flex; gap:0.35rem;">
-        <button type="button" class="btn-secondary btn-load-p">Charger</button>
-        <button type="button" class="btn-tiny btn-del-p">🗑️</button>
+      <div style="display:flex; flex-direction:column; gap:0.15rem; min-width:0;">
+        <span style="font-weight:700; font-size:0.85rem; color:var(--text-main);">${name}</span>
+        <span style="font-size:0.72rem; color:#4ade80;">🎵 Ambiance : ${ambLabel}</span>
+      </div>
+      <div style="display:flex; gap:0.35rem; flex-shrink:0;">
+        <button type="button" class="btn-primary btn-load-p" style="padding:0.35rem 0.7rem; font-size:0.75rem;">▶ Charger</button>
+        <button type="button" class="btn-secondary btn-update-p" title="Mettre à jour ce preset avec les réglages et l'ambiance actuels" style="padding:0.35rem 0.55rem;">💾</button>
+        <button type="button" class="btn-tiny btn-del-p" title="Supprimer ce preset">🗑️</button>
       </div>
     `;
 
     row.querySelector(".btn-load-p").addEventListener("click", () => {
-      applyConfigurationObject(presets[name]);
+      AppState.activePresetName = name;
+      applyConfigurationObject(presets[name], { launchAmbience: true });
+      renderQuickPresetsBar();
       document.getElementById("presets-modal").style.display = "none";
+    });
+
+    row.querySelector(".btn-update-p").addEventListener("click", () => {
+      presets[name] = serializeCurrentConfig();
+      localStorage.setItem(STORAGE_KEYS.SAVED_PRESETS, JSON.stringify(presets));
+      AppState.activePresetName = name;
+      renderSavedPresetsList();
+      renderQuickPresetsBar();
     });
 
     row.querySelector(".btn-del-p").addEventListener("click", () => {
       delete presets[name];
       localStorage.setItem(STORAGE_KEYS.SAVED_PRESETS, JSON.stringify(presets));
+      if (AppState.activePresetName === name) AppState.activePresetName = null;
       renderSavedPresetsList();
+      renderQuickPresetsBar();
     });
 
     listEl.appendChild(row);

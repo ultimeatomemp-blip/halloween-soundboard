@@ -89,6 +89,29 @@
     </div>
 
     <!-- ====================================================================
+         2B. BARRE DE PRESETS RAPIDES (1 CLIC = PADS + AMBIANCE DE FOND + VOLUMES)
+         ==================================================================== -->
+    <section class="quick-presets-strip" aria-label="Accès rapide aux Presets">
+      <div class="quick-presets-label">
+        <span>🎭</span>
+        <span>Presets :</span>
+      </div>
+      <div id="quick-presets-pills" class="quick-presets-pills">
+        <!-- Pastilles des presets générées dynamiquement -->
+      </div>
+      <div class="quick-presets-actions">
+        <button type="button" id="btn-quick-save-preset" class="btn-preset-quick-action save" title="Enregistrer la configuration actuelle (avec l'ambiance en cours) comme nouveau Preset">
+          <span>➕</span>
+          <span>Sauver</span>
+        </button>
+        <button type="button" id="btn-quick-sync-presets" class="btn-preset-quick-action sync" title="Gérer, partager ou synchroniser mes Presets entre PC et Téléphone">
+          <span>📲</span>
+          <span>PC ↔ Tél</span>
+        </button>
+      </div>
+    </section>
+
+    <!-- ====================================================================
          3. BARRE D'ONGLETS (Pads Stéréo | Ambiances | Randomizer)
          ==================================================================== -->
     <nav class="main-tabs-bar" aria-label="Sections principales">
@@ -418,28 +441,58 @@
 
   </div>
 
-  <!-- FENÊTRE MODALE : GESTION DES CONFIGURATIONS (PRESETS / PROFILS) -->
+  <!-- FENÊTRE MODALE : GESTION DES CONFIGURATIONS (PRESETS / PROFILS MULTI-APPAREILS) -->
   <div id="presets-modal" class="modal-backdrop" style="display: none;" role="dialog" aria-modal="true">
     <div class="modal-card">
       <div class="modal-header">
-        <h3>⚙️ Mes Configurations (Profils de Pièces)</h3>
+        <h3>🎭 Mes Presets & Synchronisation (PC ↔ Téléphone)</h3>
         <button id="btn-close-presets" class="btn-close-modal">✕</button>
       </div>
       <p class="panel-desc">
-        Sauvegardez l'organisation actuelle de votre Soundboard (ordre des pads par glisser-déposer, favoris ★, sons masqués, volumes et réglages du Randomizer).
+        Un Preset sauvegarde <strong>l'ambiance d'arrière-plan active</strong>, l'ordre des pads, vos favoris ★, les sons masqués, les volumes et le Randomizer.
       </p>
 
+      <div class="preset-ambience-preview-badge" id="preset-ambience-preview-badge">
+        <span>🎵 Ambiance qui sera enregistrée :</span>
+        <strong id="preset-current-ambience-name">Aucune (Silence)</strong>
+      </div>
+
       <div class="preset-save-row">
-        <input type="text" id="preset-name-input" placeholder="Nom du profil (ex: Salon, Entrée, Jardin)...">
-        <button id="btn-save-preset" class="btn-primary">➕ Enregistrer</button>
+        <input type="text" id="preset-name-input" placeholder="Nom du Preset (ex: 🎃 Salon, 👻 Jardin, ⛈️ Orage)...">
+        <button id="btn-save-preset" class="btn-primary">➕ Sauver Preset</button>
       </div>
 
       <div id="presets-list" class="presets-list"></div>
 
+      <!-- Synchronisation multi-terminaux (PC <-> Téléphone / Tablette) -->
+      <div class="preset-sync-box">
+        <div class="sync-box-title">📲 Utiliser mes Presets sur tous mes appareils (PC, Téléphone, Tablette) :</div>
+        <div class="sync-buttons-grid">
+          <button type="button" id="btn-save-presets-project" class="btn-sync-action github" title="Enregistre le fichier presets.json dans votre dossier GitHub pour que tous vos appareils aient ces presets par défaut">
+            💾 Sauver <code>presets.json</code> (Pour GitHub)
+          </button>
+          <button type="button" id="btn-generate-qr-sync" class="btn-sync-action qrcode" title="Génère un QR Code et un Lien Magique à scanner avec votre téléphone pour transférer tous vos presets en 2 secondes">
+            📲 QR Code / Lien vers mon Tél
+          </button>
+        </div>
+
+        <!-- Zone d'affichage du QR Code & Lien Magique -->
+        <div id="qr-sync-panel" class="qr-sync-panel" style="display: none;">
+          <p class="qr-help-txt">Scannez ce QR Code avec l'appareil photo de votre téléphone (ou copiez le lien) pour importer instantanément vos Presets :</p>
+          <div class="qr-code-wrap">
+            <img id="qr-code-img" alt="QR Code de synchronisation des Presets" width="180" height="180">
+          </div>
+          <div class="qr-link-row">
+            <input type="text" id="qr-magic-link-input" readonly>
+            <button type="button" id="btn-copy-magic-link" class="btn-primary">📋 Copier le lien</button>
+          </div>
+        </div>
+      </div>
+
       <div class="preset-transfer-row">
-        <button id="btn-export-config-file" class="btn-secondary">📤 Exporter ma config (.json)</button>
+        <button id="btn-export-config-file" class="btn-secondary">📤 Exporter (.json)</button>
         <input type="file" id="import-config-input" accept=".json" style="display: none;">
-        <button id="btn-import-config-file" class="btn-secondary">📥 Importer une config (.json)</button>
+        <button id="btn-import-config-file" class="btn-secondary">📥 Importer (.json)</button>
         <button id="btn-reset-default-config" class="btn-tiny-restore">♻️ Réinitialiser par défaut</button>
       </div>
     </div>

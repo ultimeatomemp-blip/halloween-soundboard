@@ -318,6 +318,124 @@ body {
 }
 
 /* ==========================================================================
+   2B. BARRE DE PRESETS RAPIDES (Accès 1 clic aux Scènes + Ambiance incluse)
+   ========================================================================== */
+.quick-presets-strip {
+  display: flex;
+  align-items: center;
+  gap: 0.55rem;
+  background: var(--bg-panel);
+  border: 1px solid var(--border-subtle);
+  border-radius: 12px;
+  padding: 0.45rem 0.7rem;
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+}
+
+.quick-presets-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  font-size: 0.78rem;
+  font-weight: 800;
+  color: var(--orange-bright);
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.quick-presets-pills {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+  overflow-x: auto;
+  scrollbar-width: thin;
+  min-width: 0;
+  padding: 0.1rem 0;
+}
+
+.preset-quick-pill {
+  background: var(--bg-card);
+  color: var(--text-main);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 999px;
+  padding: 0.34rem 0.78rem;
+  font-size: 0.76rem;
+  font-weight: 700;
+  white-space: nowrap;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  flex-shrink: 0;
+  transition: all 0.15s ease;
+}
+
+.preset-quick-pill:hover {
+  border-color: var(--orange-main);
+  background: var(--bg-card-hover);
+}
+
+.preset-quick-pill.active {
+  background: linear-gradient(180deg, rgba(255, 115, 21, 0.28) 0%, rgba(180, 65, 10, 0.45) 100%);
+  border-color: var(--orange-bright);
+  color: #fff;
+  box-shadow: 0 0 12px rgba(255, 115, 21, 0.45);
+}
+
+.preset-pill-amb-tag {
+  font-size: 0.66rem;
+  font-weight: 600;
+  color: #4ade80;
+  background: rgba(34, 197, 94, 0.14);
+  border: 1px solid rgba(34, 197, 94, 0.32);
+  padding: 0.08rem 0.42rem;
+  border-radius: 999px;
+}
+
+.quick-presets-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  flex-shrink: 0;
+}
+
+.btn-preset-quick-action {
+  background: var(--bg-card);
+  color: var(--text-main);
+  border: 1px solid var(--border-subtle);
+  border-radius: 8px;
+  padding: 0.34rem 0.65rem;
+  font-size: 0.74rem;
+  font-weight: 700;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: all 0.15s ease;
+}
+
+.btn-preset-quick-action.save {
+  border-color: rgba(255, 115, 21, 0.45);
+  color: var(--orange-bright);
+}
+
+.btn-preset-quick-action.save:hover {
+  background: rgba(255, 115, 21, 0.16);
+}
+
+.btn-preset-quick-action.sync {
+  border-color: rgba(157, 78, 221, 0.5);
+  color: #d8b4fe;
+}
+
+.btn-preset-quick-action.sync:hover {
+  background: rgba(157, 78, 221, 0.18);
+}
+
+/* ==========================================================================
    3. BARRE D'ONGLETS PRINCIPAUX (Violet lumineux sur l'onglet actif)
    ========================================================================== */
 .main-tabs-bar {
@@ -899,29 +1017,37 @@ body {
   }
 }
 
-/* SortableJS classes & Mode Déplacement Actif */
+/* SortableJS classes & Mode Déplacement Actif (Suivi 1:1 instantané sous le doigt / la souris sans latence CSS) */
 .sortable-ghost {
-  opacity: 0.3;
+  opacity: 0.25 !important;
   border: 2px dashed var(--orange-main) !important;
+  background: rgba(255, 115, 21, 0.08) !important;
 }
 
-.sortable-fallback {
-  opacity: 0.95 !important;
-  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.85), 0 0 18px rgba(255, 115, 21, 0.65) !important;
-  border-color: var(--orange-bright) !important;
-  transform: scale(1.03);
-  z-index: 9999 !important;
+.sortable-fallback,
+.sortable-drag {
+  transition: none !important;
+  animation: none !important;
+  pointer-events: none !important;
+  opacity: 0.96 !important;
+  box-shadow: 0 16px 36px rgba(0, 0, 0, 0.92), 0 0 22px rgba(255, 115, 21, 0.85) !important;
+  border: 2px solid var(--orange-bright) !important;
+  z-index: 99999 !important;
+  will-change: transform;
+  cursor: grabbing !important;
 }
 
 body.drag-mode-active .sound-pad-card {
-  border-color: rgba(34, 197, 94, 0.45);
+  border-color: rgba(34, 197, 94, 0.55);
   cursor: grab;
   touch-action: none;
 }
 
 body.drag-mode-active .pad-artwork-box,
-body.drag-mode-active .pad-stereo-trigger-bar {
+body.drag-mode-active .pad-stereo-trigger-bar,
+body.drag-mode-active .pad-play-circle {
   cursor: grab;
+  pointer-events: none;
 }
 
 /* ==========================================================================
@@ -1393,12 +1519,14 @@ input[type="range"] {
   background: var(--bg-panel);
   border: 1.5px solid var(--orange-main);
   border-radius: var(--radius-lg);
-  padding: 1.2rem;
-  max-width: 540px;
+  padding: 1.15rem;
+  max-width: 580px;
+  max-height: 92vh;
+  overflow-y: auto;
   width: 100%;
   display: flex;
   flex-direction: column;
-  gap: 0.9rem;
+  gap: 0.85rem;
   box-shadow: 0 12px 40px rgba(0, 0, 0, 0.85);
 }
 
@@ -1416,6 +1544,30 @@ input[type="range"] {
   height: 30px;
   border-radius: 50%;
   cursor: pointer;
+}
+
+.panel-desc {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  line-height: 1.4;
+}
+
+.preset-ambience-preview-badge {
+  background: rgba(34, 197, 94, 0.12);
+  border: 1px solid rgba(34, 197, 94, 0.35);
+  border-radius: 8px;
+  padding: 0.45rem 0.7rem;
+  font-size: 0.78rem;
+  color: var(--text-muted);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+}
+
+.preset-ambience-preview-badge strong {
+  color: #4ade80;
 }
 
 .preset-save-row {
@@ -1440,6 +1592,7 @@ input[type="range"] {
   border-radius: 8px;
   font-weight: 800;
   cursor: pointer;
+  white-space: nowrap;
 }
 
 .btn-secondary {
@@ -1457,7 +1610,7 @@ input[type="range"] {
   display: flex;
   flex-direction: column;
   gap: 0.45rem;
-  max-height: 220px;
+  max-height: 195px;
   overflow-y: auto;
 }
 
@@ -1469,6 +1622,100 @@ input[type="range"] {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  gap: 0.5rem;
+}
+
+.preset-sync-box {
+  background: #100e19;
+  border: 1px solid rgba(157, 78, 221, 0.35);
+  border-radius: 10px;
+  padding: 0.75rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+}
+
+.sync-box-title {
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: #d8b4fe;
+}
+
+.sync-buttons-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 0.5rem;
+}
+
+.btn-sync-action {
+  background: var(--bg-card);
+  color: var(--text-main);
+  border: 1px solid var(--border-subtle);
+  border-radius: 8px;
+  padding: 0.55rem 0.7rem;
+  font-size: 0.77rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  text-align: center;
+}
+
+.btn-sync-action.github {
+  border-color: rgba(34, 197, 94, 0.45);
+  color: #4ade80;
+}
+
+.btn-sync-action.github:hover {
+  background: rgba(34, 197, 94, 0.15);
+}
+
+.btn-sync-action.qrcode {
+  border-color: rgba(255, 115, 21, 0.45);
+  color: var(--orange-bright);
+}
+
+.btn-sync-action.qrcode:hover {
+  background: rgba(255, 115, 21, 0.15);
+}
+
+.qr-sync-panel {
+  background: var(--bg-card);
+  border: 1px dashed var(--orange-main);
+  border-radius: 8px;
+  padding: 0.75rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.6rem;
+}
+
+.qr-help-txt {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  text-align: center;
+}
+
+.qr-code-wrap {
+  background: #fff;
+  padding: 0.5rem;
+  border-radius: 8px;
+  display: inline-flex;
+}
+
+.qr-link-row {
+  display: flex;
+  width: 100%;
+  gap: 0.45rem;
+}
+
+.qr-link-row input {
+  flex: 1;
+  background: #09080f;
+  border: 1px solid var(--border-subtle);
+  border-radius: 6px;
+  padding: 0.4rem 0.6rem;
+  color: var(--text-muted);
+  font-size: 0.72rem;
 }
 
 .preset-transfer-row {
