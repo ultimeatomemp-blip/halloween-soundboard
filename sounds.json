@@ -1,5 +1,15 @@
 [
   {
+    "id": "amb_ambiance_d_halloween_2",
+    "name": "Ambiance d'Halloween 2",
+    "code": "AMB",
+    "file": "sounds/[AMB] Ambiance d'Halloween 2.mp3",
+    "category": "Ambiances",
+    "type": "loop",
+    "duration": 496.2,
+    "durationFormatted": "8:16"
+  },
+  {
     "id": "amb_ambiance_de_cimetiere_mortelle",
     "name": "Ambiance de cimetière mortelle",
     "code": "AMB",
@@ -48,6 +58,26 @@
     "type": "loop",
     "duration": 10,
     "durationFormatted": "10s"
+  },
+  {
+    "id": "amb_bourdon_inquietant_1",
+    "name": "Bourdon inquiétant 1",
+    "code": "AMB",
+    "file": "sounds/[AMB] Bourdon inquiétant 1.mp3",
+    "category": "Ambiances",
+    "type": "loop",
+    "duration": 90.1,
+    "durationFormatted": "1:30"
+  },
+  {
+    "id": "amb_bourdon_inquietant_2",
+    "name": "Bourdon inquiétant 2",
+    "code": "AMB",
+    "file": "sounds/[AMB] Bourdon inquiétant 2.mp3",
+    "category": "Ambiances",
+    "type": "loop",
+    "duration": 90.1,
+    "durationFormatted": "1:30"
   },
   {
     "id": "amb_cimetiere_hante_en_boucle_2",
@@ -190,6 +220,16 @@
     "durationFormatted": "1.6s"
   },
   {
+    "id": "ani_hurlement_au_loin",
+    "name": "Hurlement au loin",
+    "code": "ANI",
+    "file": "sounds/[ANI] Hurlement au loin.mp3",
+    "category": "Animaux",
+    "type": "oneshot",
+    "duration": 4.7,
+    "durationFormatted": "4.7s"
+  },
+  {
     "id": "ani_hurlement_de_loup",
     "name": "Hurlement de loup",
     "code": "ANI",
@@ -238,6 +278,16 @@
     "type": "oneshot",
     "duration": 2.4,
     "durationFormatted": "2.4s"
+  },
+  {
+    "id": "fan_chuchotement_fantomatique_2",
+    "name": "Chuchotement fantomatique 2",
+    "code": "FAN",
+    "file": "sounds/[FAN] Chuchotement fantomatique 2.mp3",
+    "category": "Fantômes",
+    "type": "oneshot",
+    "duration": 4,
+    "durationFormatted": "4.0s"
   },
   {
     "id": "fan_chuchotement_fantomatique",
@@ -350,6 +400,56 @@
     "durationFormatted": "3.8s"
   },
   {
+    "id": "fan_souffle_fantomatique",
+    "name": "Souffle fantomatique",
+    "code": "FAN",
+    "file": "sounds/[FAN] Souffle fantomatique.mp3",
+    "category": "Fantômes",
+    "type": "oneshot",
+    "duration": 3.6,
+    "durationFormatted": "3.6s"
+  },
+  {
+    "id": "fx_bells_1",
+    "name": "-bells-1",
+    "code": "FX",
+    "file": "sounds/[FX] -bells-1.mp3",
+    "category": "Effets sonores",
+    "type": "oneshot",
+    "duration": 8.1,
+    "durationFormatted": "8.1s"
+  },
+  {
+    "id": "fx_bells_2",
+    "name": "-bells-2",
+    "code": "FX",
+    "file": "sounds/[FX] -bells-2.mp3",
+    "category": "Effets sonores",
+    "type": "oneshot",
+    "duration": 15,
+    "durationFormatted": "15s"
+  },
+  {
+    "id": "fx_bells_3",
+    "name": "-bells-3",
+    "code": "FX",
+    "file": "sounds/[FX] -bells-3.mp3",
+    "category": "Effets sonores",
+    "type": "oneshot",
+    "duration": 14.2,
+    "durationFormatted": "14s"
+  },
+  {
+    "id": "fx_bells_4",
+    "name": "-bells-4",
+    "code": "FX",
+    "file": "sounds/[FX] -bells-4.mp3",
+    "category": "Effets sonores",
+    "type": "oneshot",
+    "duration": 20.7,
+    "durationFormatted": "21s"
+  },
+  {
     "id": "fx_bruit_inquietant",
     "name": "Bruit inquiétant",
     "code": "FX",
@@ -460,6 +560,16 @@
     "durationFormatted": "8.1s"
   },
   {
+    "id": "fx_toc_toc",
+    "name": "Toc toc",
+    "code": "FX",
+    "file": "sounds/[FX] Toc toc.mp3",
+    "category": "Effets sonores",
+    "type": "oneshot",
+    "duration": 30.1,
+    "durationFormatted": "30s"
+  },
+  {
     "id": "jeu_batterie",
     "name": "Batterie",
     "code": "JEU",
@@ -520,6 +630,16 @@
     "durationFormatted": "12s"
   },
   {
+    "id": "mon_comte_dracula",
+    "name": "Comte Dracula",
+    "code": "MON",
+    "file": "sounds/[MON] Comte Dracula.mp3",
+    "category": "Monstres",
+    "type": "oneshot",
+    "duration": 4.3,
+    "durationFormatted": "4.3s"
+  },
+  {
     "id": "mon_cri_de_creature_inquietante",
     "name": "Cri de créature inquiétante",
     "code": "MON",
@@ -528,6 +648,16 @@
     "type": "oneshot",
     "duration": 10,
     "durationFormatted": "10s"
+  },
+  {
+    "id": "mon_epouvantail",
+    "name": "Épouvantail",
+    "code": "MON",
+    "file": "sounds/[MON] Épouvantail.mp3",
+    "category": "Monstres",
+    "type": "oneshot",
+    "duration": 7.2,
+    "durationFormatted": "7.2s"
   },
   {
     "id": "mon_fete_des_zombies",
@@ -588,6 +718,26 @@
     "type": "oneshot",
     "duration": 8.3,
     "durationFormatted": "8.3s"
+  },
+  {
+    "id": "mon_igor",
+    "name": "Igor",
+    "code": "MON",
+    "file": "sounds/[MON] Igor.mp3",
+    "category": "Monstres",
+    "type": "oneshot",
+    "duration": 4.5,
+    "durationFormatted": "4.5s"
+  },
+  {
+    "id": "mon_loup_garou",
+    "name": "Loup-garou",
+    "code": "MON",
+    "file": "sounds/[MON] Loup-garou.mp3",
+    "category": "Monstres",
+    "type": "oneshot",
+    "duration": 9.3,
+    "durationFormatted": "9.3s"
   },
   {
     "id": "mon_momie_sortant_du_sarcophage_2",
@@ -790,6 +940,16 @@
     "durationFormatted": "59s"
   },
   {
+    "id": "mus_melodie_de_piano_hante",
+    "name": "Mélodie de piano hanté",
+    "code": "MUS",
+    "file": "sounds/[MUS] Mélodie de piano hanté.mp3",
+    "category": "Musiques",
+    "type": "loop",
+    "duration": 22.5,
+    "durationFormatted": "23s"
+  },
+  {
     "id": "mus_moisson",
     "name": "Moisson",
     "code": "MUS",
@@ -818,6 +978,26 @@
     "type": "loop",
     "duration": 24.5,
     "durationFormatted": "25s"
+  },
+  {
+    "id": "mus_piano_doux",
+    "name": "Piano doux",
+    "code": "MUS",
+    "file": "sounds/[MUS] Piano doux.mp3",
+    "category": "Musiques",
+    "type": "loop",
+    "duration": 59.6,
+    "durationFormatted": "60s"
+  },
+  {
+    "id": "mus_piano_newcombe_3",
+    "name": "Piano Newcombe 3",
+    "code": "MUS",
+    "file": "sounds/[MUS] Piano Newcombe 3.mp3",
+    "category": "Musiques",
+    "type": "loop",
+    "duration": 151.6,
+    "durationFormatted": "2:32"
   },
   {
     "id": "mus_squelettes_dansants",
@@ -888,6 +1068,16 @@
     "type": "oneshot",
     "duration": 8.8,
     "durationFormatted": "8.8s"
+  },
+  {
+    "id": "obj_porte_grincante",
+    "name": "Porte grinçante",
+    "code": "OBJ",
+    "file": "sounds/[OBJ] Porte grinçante.mp3",
+    "category": "Objets",
+    "type": "oneshot",
+    "duration": 5.1,
+    "durationFormatted": "5.1s"
   },
   {
     "id": "obj_porte_qui_s_ouvre",
@@ -1040,6 +1230,176 @@
     "durationFormatted": "42s"
   },
   {
+    "id": "vox_cri_01",
+    "name": "Cri 01",
+    "code": "VOX",
+    "file": "sounds/[VOX] Cri 01.mp3",
+    "category": "Voix et cris",
+    "type": "oneshot",
+    "duration": 2.3,
+    "durationFormatted": "2.3s"
+  },
+  {
+    "id": "vox_cri_02",
+    "name": "Cri 02",
+    "code": "VOX",
+    "file": "sounds/[VOX] Cri 02.mp3",
+    "category": "Voix et cris",
+    "type": "oneshot",
+    "duration": 1.7,
+    "durationFormatted": "1.7s"
+  },
+  {
+    "id": "vox_cri_03",
+    "name": "Cri 03",
+    "code": "VOX",
+    "file": "sounds/[VOX] Cri 03.mp3",
+    "category": "Voix et cris",
+    "type": "oneshot",
+    "duration": 1.6,
+    "durationFormatted": "1.6s"
+  },
+  {
+    "id": "vox_cri_04",
+    "name": "Cri 04",
+    "code": "VOX",
+    "file": "sounds/[VOX] Cri 04.mp3",
+    "category": "Voix et cris",
+    "type": "oneshot",
+    "duration": 4.5,
+    "durationFormatted": "4.5s"
+  },
+  {
+    "id": "vox_cri_05",
+    "name": "Cri 05",
+    "code": "VOX",
+    "file": "sounds/[VOX] Cri 05.mp3",
+    "category": "Voix et cris",
+    "type": "oneshot",
+    "duration": 1.2,
+    "durationFormatted": "1.2s"
+  },
+  {
+    "id": "vox_cri_06",
+    "name": "Cri 06",
+    "code": "VOX",
+    "file": "sounds/[VOX] Cri 06.mp3",
+    "category": "Voix et cris",
+    "type": "oneshot",
+    "duration": 1.7,
+    "durationFormatted": "1.7s"
+  },
+  {
+    "id": "vox_cri_07",
+    "name": "Cri 07",
+    "code": "VOX",
+    "file": "sounds/[VOX] Cri 07.mp3",
+    "category": "Voix et cris",
+    "type": "oneshot",
+    "duration": 1.6,
+    "durationFormatted": "1.6s"
+  },
+  {
+    "id": "vox_cri_08",
+    "name": "Cri 08",
+    "code": "VOX",
+    "file": "sounds/[VOX] Cri 08.mp3",
+    "category": "Voix et cris",
+    "type": "oneshot",
+    "duration": 2,
+    "durationFormatted": "2.0s"
+  },
+  {
+    "id": "vox_cri_09",
+    "name": "Cri 09",
+    "code": "VOX",
+    "file": "sounds/[VOX] Cri 09.mp3",
+    "category": "Voix et cris",
+    "type": "oneshot",
+    "duration": 1.4,
+    "durationFormatted": "1.4s"
+  },
+  {
+    "id": "vox_cri_10",
+    "name": "Cri 10",
+    "code": "VOX",
+    "file": "sounds/[VOX] Cri 10.mp3",
+    "category": "Voix et cris",
+    "type": "oneshot",
+    "duration": 1.6,
+    "durationFormatted": "1.6s"
+  },
+  {
+    "id": "vox_cri_11",
+    "name": "Cri 11",
+    "code": "VOX",
+    "file": "sounds/[VOX] Cri 11.mp3",
+    "category": "Voix et cris",
+    "type": "oneshot",
+    "duration": 1.6,
+    "durationFormatted": "1.6s"
+  },
+  {
+    "id": "vox_cri_12",
+    "name": "Cri 12",
+    "code": "VOX",
+    "file": "sounds/[VOX] Cri 12.mp3",
+    "category": "Voix et cris",
+    "type": "oneshot",
+    "duration": 1.4,
+    "durationFormatted": "1.4s"
+  },
+  {
+    "id": "vox_cri_13",
+    "name": "Cri 13",
+    "code": "VOX",
+    "file": "sounds/[VOX] Cri 13.mp3",
+    "category": "Voix et cris",
+    "type": "oneshot",
+    "duration": 1.4,
+    "durationFormatted": "1.4s"
+  },
+  {
+    "id": "vox_cri_14",
+    "name": "Cri 14",
+    "code": "VOX",
+    "file": "sounds/[VOX] Cri 14.mp3",
+    "category": "Voix et cris",
+    "type": "oneshot",
+    "duration": 2.8,
+    "durationFormatted": "2.8s"
+  },
+  {
+    "id": "vox_cri_15",
+    "name": "Cri 15",
+    "code": "VOX",
+    "file": "sounds/[VOX] Cri 15.mp3",
+    "category": "Voix et cris",
+    "type": "oneshot",
+    "duration": 0.8,
+    "durationFormatted": "0.8s"
+  },
+  {
+    "id": "vox_cri_16",
+    "name": "Cri 16",
+    "code": "VOX",
+    "file": "sounds/[VOX] Cri 16.mp3",
+    "category": "Voix et cris",
+    "type": "oneshot",
+    "duration": 0.8,
+    "durationFormatted": "0.8s"
+  },
+  {
+    "id": "vox_cri_17",
+    "name": "Cri 17",
+    "code": "VOX",
+    "file": "sounds/[VOX] Cri 17.mp3",
+    "category": "Voix et cris",
+    "type": "oneshot",
+    "duration": 1.5,
+    "durationFormatted": "1.5s"
+  },
+  {
     "id": "vox_cri_de_femme_effrayee_02",
     "name": "Cri de femme effrayée 02",
     "code": "VOX",
@@ -1058,6 +1418,16 @@
     "type": "oneshot",
     "duration": 2.6,
     "durationFormatted": "2.6s"
+  },
+  {
+    "id": "vox_fille_malefique",
+    "name": "Fille maléfique",
+    "code": "VOX",
+    "file": "sounds/[VOX] Fille maléfique.mp3",
+    "category": "Voix et cris",
+    "type": "oneshot",
+    "duration": 3.6,
+    "durationFormatted": "3.6s"
   },
   {
     "id": "vox_hou_et_rire",
